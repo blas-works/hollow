@@ -40,8 +40,8 @@ let mainWindow: BrowserWindow | null = null
 function createWindow(): void {
   const isPinned = store.get('isPinned', false)
 
-  const initWidth = isPinned ? 180 : 220
-  const initHeight = isPinned ? 56 : 150
+  const initWidth = 260
+  const initHeight = 160
 
   mainWindow = new BrowserWindow({
     width: initWidth,

@@ -11,22 +11,16 @@ export function Timer({ minutes, isRunning }: TimerProps): React.JSX.Element {
     <div className="flex flex-1 items-center justify-center">
       <div className="flex items-baseline gap-1">
         <span
-          className={`font-mono tracking-[-0.05em] text-text-main transition-[font-size] duration-[180ms] ease-in-out will-change-[font-size] backface-hidden text-[3.2rem] font-light ${
+          className={`font-mono tracking-[-0.05em] text-text-main text-[4rem] font-extralight ${
             isRunning ? 'opacity-100' : 'opacity-45'
-          } transition-opacity duration-200`}
+          } transition-opacity duration-500`}
         >
           {minutes}
         </span>
         <motion.span
-          animate={{ opacity: isRunning ? 0.45 : 0.15 }}
-          transition={{
-            duration: 2,
-            repeat: isRunning ? Infinity : 0,
-            repeatType: 'mirror',
-            ease: 'easeInOut',
-            type: 'tween'
-          }}
-          className="font-mono font-light text-text-main transition-[font-size] duration-[180ms] ease-in-out text-lg"
+          animate={{ opacity: isRunning ? [0.15, 0.45, 0.15] : 0.15 }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          className="font-mono font-light text-text-main text-xl"
         >
           m
         </motion.span>

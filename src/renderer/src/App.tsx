@@ -7,7 +7,7 @@ export default function App(): React.JSX.Element {
   const [menuTab, setMenuTab] = useState<MenuTab>('stats')
 
   const { view, switchView, isResizing } = useViewTransition()
-  const { isPinned, isResizingPin, togglePin } = usePinned()
+  const { isPinned, togglePin } = usePinned()
   const { config, updateConfig, configRef } = useConfig()
   const { sessions, logSession, clearSessions } = useSessions()
   const stats = useStats(sessions)
@@ -19,11 +19,7 @@ export default function App(): React.JSX.Element {
   )
 
   const windowClass =
-    view === 'menu'
-      ? 'w-[660px] h-[460px] rounded-[2rem]'
-      : isPinned
-        ? 'w-[180px] h-[56px] rounded-full'
-        : 'w-[220px] h-[150px] rounded-[2rem]'
+    view === 'menu' ? 'w-[660px] h-[460px] rounded-[2rem]' : 'w-[260px] h-[160px] rounded-[1.5rem]'
 
   return (
     <div className="app-drag flex h-full w-full items-center justify-center">
@@ -35,7 +31,7 @@ export default function App(): React.JSX.Element {
             timeLeft={timeLeft}
             isRunning={isRunning}
             isPinned={isPinned}
-            isTransitioning={isResizing || isResizingPin}
+            isTransitioning={isResizing}
             onToggleTimer={toggleTimer}
             onResetTimer={resetTimer}
             onTogglePin={togglePin}
@@ -53,7 +49,7 @@ export default function App(): React.JSX.Element {
             onUpdateConfig={updateConfig}
             onTimeReset={(val) => setTimeLeft(val * 60)}
             onClearSessions={clearSessions}
-            onBack={() => switchView('timer', isPinned)}
+            onBack={() => switchView('timer')}
           />
         )}
       </div>
