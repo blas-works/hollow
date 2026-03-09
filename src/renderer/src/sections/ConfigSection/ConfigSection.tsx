@@ -1,5 +1,6 @@
 import React from 'react'
-import { ConfigSlider, Toggle } from '../../components'
+import { ConfigSlider, Toggle, SoundSelector } from '../../components'
+import { useSound } from '../../hooks'
 import type { AppConfig } from '../../schemas'
 import { MIN_MINUTES, MAX_MINUTES } from '../../schemas'
 
@@ -16,8 +17,10 @@ export function ConfigSection({
   onUpdate,
   onTimeReset
 }: ConfigSectionProps): React.JSX.Element {
+  const { isPlaying, preview, stop } = useSound()
+
   return (
-    <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto">
+    <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto pr-2 -mr-2">
       <ConfigSlider
         value={config.focusMinutes}
         min={MIN_MINUTES}
@@ -35,8 +38,20 @@ export function ConfigSection({
           label="Sonido de notificación"
           subtitle="Reproducir sonido al terminar sesión"
           isActive={config.soundEnabled}
-          onToggle={() => onUpdate({ soundEnabled: !config.soundEnabled })}
+          onToggle={() => {
+            if (config.soundEnabled) stop()
+            onUpdate({ soundEnabled: !config.soundEnabled })
+          }}
         />
+
+        {config.soundEnabled && (
+          <SoundSelector
+            selectedSound={config.selectedSound}
+            isPlaying={isPlaying}
+            onSelect={(soundId) => onUpdate({ selectedSound: soundId })}
+            onPreview={preview}
+          />
+        )}
       </div>
     </div>
   )

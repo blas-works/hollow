@@ -46,7 +46,7 @@ export function useTimer(
     onSessionComplete(session)
 
     if (configRef.current.soundEnabled) {
-      playCompletionSound()
+      playCompletionSound(configRef.current.selectedSound)
     }
   }, [timeLeft, isRunning, configRef, onSessionComplete])
 

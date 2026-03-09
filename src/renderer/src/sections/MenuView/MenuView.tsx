@@ -49,7 +49,7 @@ export function MenuView({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-col flex-1"
+            className="flex flex-col flex-1 min-h-0"
           >
             <h2 className="text-2xl font-light tracking-[-0.025em] text-text-main mb-1">
               {menuTab === 'stats' ? 'Estadisticas' : 'Configuracion'}
