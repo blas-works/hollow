@@ -1,5 +1,5 @@
 import type { AppConfig } from './config.schema'
-import type { SessionRecord } from './session.schema'
+import type { SessionRecord, SessionStats, FullSessionStats } from './session.schema'
 
 export interface ElectronAPI {
   setAlwaysOnTop: (isPinned: boolean) => Promise<boolean>
@@ -9,8 +9,12 @@ export interface ElectronAPI {
   resizeWindow: (width: number, height: number) => Promise<void>
   saveConfig: (config: AppConfig) => Promise<void>
   loadConfig: () => Promise<AppConfig>
-  logSession: (session: SessionRecord) => Promise<void>
-  loadSessions: () => Promise<SessionRecord[]>
-  clearSessions: () => Promise<void>
   onPinnedState: (callback: (isPinned: boolean) => void) => void
+  session: {
+    create: (data: Omit<SessionRecord, 'id' | 'createdAt'>) => Promise<SessionRecord>
+    getAll: () => Promise<SessionRecord[]>
+    getStats: () => Promise<SessionStats>
+    getFullStats: () => Promise<FullSessionStats>
+    clear: () => Promise<void>
+  }
 }

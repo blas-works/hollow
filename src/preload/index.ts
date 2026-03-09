@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
+import type { NewSession, Session, SessionStats, FullSessionStats } from '../database/schema'
 
 interface Config {
   focusMinutes: number
@@ -14,10 +15,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.invoke('resize-window', width, height),
   saveConfig: (config: Config) => ipcRenderer.invoke('save-config', config),
   loadConfig: () => ipcRenderer.invoke('load-config'),
-  logSession: (session: Record<string, unknown>) => ipcRenderer.invoke('log-session', session),
-  loadSessions: () => ipcRenderer.invoke('load-sessions'),
-  clearSessions: () => ipcRenderer.invoke('clear-sessions'),
   onPinnedState: (callback: (isPinned: boolean) => void) => {
     ipcRenderer.on('pinned-state', (_event, isPinned: boolean) => callback(isPinned))
+  },
+
+  session: {
+    create: (data: NewSession) => ipcRenderer.invoke('session:create', data),
+    getAll: (): Promise<Session[]> => ipcRenderer.invoke('session:get-all'),
+    getStats: (): Promise<SessionStats> => ipcRenderer.invoke('session:get-stats'),
+    getFullStats: (): Promise<FullSessionStats> => ipcRenderer.invoke('session:get-full-stats'),
+    clear: () => ipcRenderer.invoke('session:clear')
   }
 })

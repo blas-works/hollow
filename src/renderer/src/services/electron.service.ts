@@ -1,5 +1,5 @@
 import type { AppConfig, ElectronAPI } from '../schemas'
-import type { SessionRecord } from '../schemas/session.schema'
+import type { SessionRecord, SessionStats, FullSessionStats } from '../schemas/session.schema'
 
 class ElectronService {
   private get api(): ElectronAPI | undefined {
@@ -38,16 +38,42 @@ class ElectronService {
     return await this.api?.loadConfig()
   }
 
-  async logSession(session: SessionRecord): Promise<void> {
-    await this.api?.logSession(session)
+  async createSession(session: Omit<SessionRecord, 'id' | 'createdAt'>): Promise<SessionRecord> {
+    return (await this.api?.session.create(session as SessionRecord)) ?? ({} as SessionRecord)
   }
 
   async loadSessions(): Promise<SessionRecord[]> {
-    return (await this.api?.loadSessions()) ?? []
+    return (await this.api?.session.getAll()) ?? []
+  }
+
+  async getSessionStats(): Promise<SessionStats> {
+    return (
+      (await this.api?.session.getStats()) ?? {
+        today: { count: 0, totalMinutes: 0 },
+        week: { count: 0, totalMinutes: 0 },
+        total: { count: 0, totalMinutes: 0 }
+      }
+    )
+  }
+
+  async getFullSessionStats(): Promise<FullSessionStats> {
+    return (
+      (await this.api?.session.getFullStats()) ?? {
+        today: { count: 0, totalMinutes: 0 },
+        week: { count: 0, totalMinutes: 0 },
+        total: { count: 0, totalMinutes: 0 },
+        streak: 0,
+        bestStreak: 0,
+        avgPerDay: 0,
+        longestSession: 0,
+        completionRate: 0,
+        weeklyActivity: []
+      }
+    )
   }
 
   async clearSessions(): Promise<void> {
-    await this.api?.clearSessions()
+    await this.api?.session.clear()
   }
 }
 

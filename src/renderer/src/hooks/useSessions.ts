@@ -4,7 +4,7 @@ import type { SessionRecord } from '../schemas'
 
 interface UseSessionsReturn {
   sessions: SessionRecord[]
-  logSession: (session: SessionRecord) => Promise<void>
+  logSession: (session: Omit<SessionRecord, 'id' | 'createdAt'>) => Promise<void>
   clearSessions: () => Promise<void>
 }
 
@@ -17,9 +17,9 @@ export function useSessions(): UseSessionsReturn {
     })
   }, [])
 
-  const logSession = async (session: SessionRecord): Promise<void> => {
-    setSessions((prev) => [...prev, session])
-    await sessionsService.log(session)
+  const logSession = async (session: Omit<SessionRecord, 'id' | 'createdAt'>): Promise<void> => {
+    const created = await sessionsService.create(session)
+    setSessions((prev) => [...prev, created])
   }
 
   const clearSessions = async (): Promise<void> => {

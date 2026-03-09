@@ -5,7 +5,16 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [
+      externalizeDepsPlugin({
+        exclude: ['drizzle-orm']
+      })
+    ],
+    build: {
+      rollupOptions: {
+        external: ['better-sqlite3']
+      }
+    }
   },
   preload: {
     plugins: [externalizeDepsPlugin()]

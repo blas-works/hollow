@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import type { AppConfig } from '../schemas'
 import { playCompletionSound } from '../utils'
-import { formatDateStr } from '../utils/stats.utils'
 import type { SessionRecord } from '../schemas/session.schema'
 
 interface UseTimerReturn {
@@ -15,7 +14,7 @@ interface UseTimerReturn {
 export function useTimer(
   focusMinutes: number,
   configRef: React.MutableRefObject<AppConfig>,
-  onSessionComplete: (session: SessionRecord) => void
+  onSessionComplete: (session: Omit<SessionRecord, 'id' | 'createdAt'>) => void
 ): UseTimerReturn {
   const [timeLeft, setTimeLeft] = useState(focusMinutes * 60)
   const [isRunning, setIsRunning] = useState(false)
@@ -35,10 +34,13 @@ export function useTimer(
 
     setIsRunning(false)
 
-    const session: SessionRecord = {
-      date: formatDateStr(new Date()),
-      duration: configRef.current.focusMinutes,
-      completedAt: Date.now()
+    const now = new Date()
+    const session: Omit<SessionRecord, 'id' | 'createdAt'> = {
+      startTime: now,
+      endTime: now,
+      durationSeconds: configRef.current.focusMinutes * 60,
+      focusMinutes: configRef.current.focusMinutes,
+      completed: true
     }
 
     onSessionComplete(session)

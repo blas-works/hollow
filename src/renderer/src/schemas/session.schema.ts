@@ -1,5 +1,24 @@
 export interface SessionRecord {
-  date: string
-  duration: number
-  completedAt: number
+  id?: number
+  startTime: Date
+  endTime?: Date | null
+  durationSeconds: number
+  focusMinutes: number
+  completed: boolean
+  createdAt?: Date | null
+}
+
+export interface SessionStats {
+  today: { count: number; totalMinutes: number }
+  week: { count: number; totalMinutes: number }
+  total: { count: number; totalMinutes: number }
+}
+
+export interface FullSessionStats extends SessionStats {
+  streak: number
+  bestStreak: number
+  avgPerDay: number
+  longestSession: number
+  completionRate: number
+  weeklyActivity: { day: string; active: boolean; isToday: boolean }[]
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { TimerView, MenuView } from './sections'
-import { useConfig, useSessions, useStats, usePinned, useTimer, useViewTransition } from './hooks'
+import { useConfig, usePinned, useSessions, useStats, useTimer, useViewTransition } from './hooks'
 import type { MenuTab } from './schemas'
+import { MenuView, TimerView } from './sections'
 
 export default function App(): React.JSX.Element {
   const [menuTab, setMenuTab] = useState<MenuTab>('stats')
@@ -9,8 +9,8 @@ export default function App(): React.JSX.Element {
   const { view, switchView, isResizing } = useViewTransition()
   const { isPinned, togglePin } = usePinned()
   const { config, updateConfig, configRef } = useConfig()
-  const { sessions, logSession, clearSessions } = useSessions()
-  const stats = useStats(sessions)
+  const { logSession, clearSessions } = useSessions()
+  const stats = useStats()
 
   const { timeLeft, isRunning, toggleTimer, resetTimer, setTimeLeft } = useTimer(
     config.focusMinutes,
@@ -19,7 +19,7 @@ export default function App(): React.JSX.Element {
   )
 
   const windowClass =
-    view === 'menu' ? 'w-[660px] h-[460px] rounded-[2rem]' : 'w-[260px] h-[160px] rounded-[1.5rem]'
+    view === 'menu' ? 'w-[700px] h-[500px] rounded-[2rem]' : 'w-[260px] h-[160px] rounded-[1.5rem]'
 
   return (
     <div className="app-drag flex h-full w-full items-center justify-center">

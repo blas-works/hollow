@@ -1,13 +1,21 @@
 import { electronService } from './electron.service'
-import type { SessionRecord } from '../schemas'
+import type { SessionRecord, SessionStats, FullSessionStats } from '../schemas'
 
 class SessionsService {
   async load(): Promise<SessionRecord[]> {
     return await electronService.loadSessions()
   }
 
-  async log(session: SessionRecord): Promise<void> {
-    await electronService.logSession(session)
+  async create(session: Omit<SessionRecord, 'id' | 'createdAt'>): Promise<SessionRecord> {
+    return await electronService.createSession(session)
+  }
+
+  async getStats(): Promise<SessionStats> {
+    return await electronService.getSessionStats()
+  }
+
+  async getFullStats(): Promise<FullSessionStats> {
+    return await electronService.getFullSessionStats()
   }
 
   async clear(): Promise<void> {

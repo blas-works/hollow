@@ -2,16 +2,8 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
-
-// Fix GPU issues on Linux
-// app.commandLine.appendSwitch('disable-gpu')
-// app.commandLine.appendSwitch('disable-software-rasterizer')
-// app.commandLine.appendSwitch('disable-gpu-compositing')
-// app.commandLine.appendSwitch('disable-gpu-sandbox')
-// app.commandLine.appendSwitch('disable-setuid-sandbox')
-// app.commandLine.appendSwitch('no-sandbox')
-// app.commandLine.appendSwitch('disable-dev-shm-usage')
-// app.commandLine.appendSwitch('disable-features=VizDisplayCompositor')
+import { initDatabase, closeDatabase } from '../database/client'
+import { registerSessionIPC } from './ipc'
 
 interface Config {
   focusMinutes: number
@@ -21,7 +13,6 @@ interface Config {
 interface StoreSchema {
   isPinned: boolean
   config: Config
-  sessions: Record<string, unknown>[]
 }
 
 const store = new Store<StoreSchema>({
@@ -30,8 +21,7 @@ const store = new Store<StoreSchema>({
     config: {
       focusMinutes: 25,
       soundEnabled: true
-    },
-    sessions: []
+    }
   }
 })
 
@@ -80,6 +70,8 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  initDatabase()
+  registerSessionIPC()
   createWindow()
 
   app.on('activate', () => {
@@ -91,8 +83,13 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    closeDatabase()
     app.quit()
   }
+})
+
+app.on('before-quit', () => {
+  closeDatabase()
 })
 
 // ── Pin ──
@@ -144,20 +141,4 @@ ipcMain.handle('save-config', (_event, config: Config) => {
 
 ipcMain.handle('load-config', () => {
   return store.get('config')
-})
-
-// ── Sessions ──
-
-ipcMain.handle('log-session', (_event, session: Record<string, unknown>) => {
-  const sessions = store.get('sessions', [])
-  sessions.push(session)
-  store.set('sessions', sessions)
-})
-
-ipcMain.handle('load-sessions', () => {
-  return store.get('sessions', [])
-})
-
-ipcMain.handle('clear-sessions', () => {
-  store.set('sessions', [])
 })

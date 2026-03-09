@@ -1,3 +1,37 @@
+interface Session {
+  id: number
+  startTime: Date | null
+  endTime: Date | null
+  durationSeconds: number
+  focusMinutes: number
+  completed: boolean | null
+  createdAt: Date | null
+}
+
+interface NewSession {
+  startTime: Date | null
+  endTime?: Date | null
+  durationSeconds: number
+  focusMinutes: number
+  completed?: boolean | null
+  createdAt?: Date | null
+}
+
+interface SessionStats {
+  today: { count: number; totalMinutes: number }
+  week: { count: number; totalMinutes: number }
+  total: { count: number; totalMinutes: number }
+}
+
+interface FullSessionStats extends SessionStats {
+  streak: number
+  bestStreak: number
+  avgPerDay: number
+  longestSession: number
+  completionRate: number
+  weeklyActivity: { day: string; active: boolean; isToday: boolean }[]
+}
+
 interface ElectronAPI {
   setAlwaysOnTop: (isPinned: boolean) => Promise<boolean>
   getPinnedState: () => Promise<boolean>
@@ -9,10 +43,14 @@ interface ElectronAPI {
     focusMinutes: number
     soundEnabled: boolean
   }>
-  logSession: (session: Record<string, unknown>) => Promise<void>
-  loadSessions: () => Promise<Record<string, unknown>[]>
-  clearSessions: () => Promise<void>
   onPinnedState: (callback: (isPinned: boolean) => void) => void
+  session: {
+    create: (data: NewSession) => Promise<Session>
+    getAll: () => Promise<Session[]>
+    getStats: () => Promise<SessionStats>
+    getFullStats: () => Promise<FullSessionStats>
+    clear: () => Promise<void>
+  }
 }
 
 declare global {
