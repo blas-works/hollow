@@ -40,9 +40,12 @@ let mainWindow: BrowserWindow | null = null
 function createWindow(): void {
   const isPinned = store.get('isPinned', false)
 
+  const initWidth = isPinned ? 180 : 220
+  const initHeight = isPinned ? 56 : 150
+
   mainWindow = new BrowserWindow({
-    width: 220,
-    height: 150,
+    width: initWidth,
+    height: initHeight,
     frame: false,
     transparent: true,
     backgroundColor: '#00000000',

@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react'
 import { windowService } from '../services'
-import { TIMER_SIZE, MENU_SIZE } from '../constants'
+import { TIMER_SIZE, TIMER_PINNED_SIZE, MENU_SIZE } from '../constants'
 import type { View } from '../schemas'
 
 interface UseViewTransitionReturn {
   view: View
-  switchView: (target: View) => Promise<void>
+  switchView: (target: View, isPinned?: boolean) => Promise<void>
   isResizing: boolean
 }
 
@@ -14,22 +14,19 @@ export function useViewTransition(): UseViewTransitionReturn {
   const [isResizing, setIsResizing] = useState(false)
   const isTransitioning = useRef(false)
 
-  const switchView = async (target: View): Promise<void> => {
+  const switchView = async (target: View, isPinned = false): Promise<void> => {
     if (isTransitioning.current) return
     isTransitioning.current = true
 
-    const size = target === 'menu' ? MENU_SIZE : TIMER_SIZE
-
-    console.log(`[useViewTransition] Switching to ${target}, size:`, size)
+    const size =
+      target === 'menu' ? MENU_SIZE : isPinned ? TIMER_PINNED_SIZE : TIMER_SIZE
 
     setIsResizing(true)
     await new Promise<void>((r) => setTimeout(r, 50))
 
     await windowService.resize(size.w, size.h)
-    console.log(`[useViewTransition] Window resized to ${size.w}x${size.h}`)
 
     setView(target)
-    console.log(`[useViewTransition] View changed to ${target}`)
 
     setIsResizing(false)
     isTransitioning.current = false
