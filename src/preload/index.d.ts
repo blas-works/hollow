@@ -4,14 +4,9 @@ interface ElectronAPI {
   minimizeWindow: () => Promise<void>
   closeWindow: () => Promise<void>
   resizeWindow: (width: number, height: number) => Promise<void>
-  saveConfig: (config: {
-    focusMinutes: number
-    autoStart: boolean
-    soundEnabled: boolean
-  }) => Promise<void>
+  saveConfig: (config: { focusMinutes: number; soundEnabled: boolean }) => Promise<void>
   loadConfig: () => Promise<{
     focusMinutes: number
-    autoStart: boolean
     soundEnabled: boolean
   }>
   logSession: (session: Record<string, unknown>) => Promise<void>

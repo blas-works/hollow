@@ -32,13 +32,6 @@ export function ConfigSection({
 
       <div className="toggle-group">
         <Toggle
-          label="Auto-iniciar sesión"
-          subtitle="Comenzar automáticamente al terminar"
-          isActive={config.autoStart}
-          onToggle={() => onUpdate({ autoStart: !config.autoStart })}
-        />
-
-        <Toggle
           label="Sonido de notificación"
           subtitle="Reproducir sonido al terminar sesión"
           isActive={config.soundEnabled}

@@ -4,18 +4,17 @@ import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 
 // Fix GPU issues on Linux
-app.commandLine.appendSwitch('disable-gpu')
-app.commandLine.appendSwitch('disable-software-rasterizer')
-app.commandLine.appendSwitch('disable-gpu-compositing')
-app.commandLine.appendSwitch('disable-gpu-sandbox')
-app.commandLine.appendSwitch('disable-setuid-sandbox')
-app.commandLine.appendSwitch('no-sandbox')
-app.commandLine.appendSwitch('disable-dev-shm-usage')
-app.commandLine.appendSwitch('disable-features=VizDisplayCompositor')
+// app.commandLine.appendSwitch('disable-gpu')
+// app.commandLine.appendSwitch('disable-software-rasterizer')
+// app.commandLine.appendSwitch('disable-gpu-compositing')
+// app.commandLine.appendSwitch('disable-gpu-sandbox')
+// app.commandLine.appendSwitch('disable-setuid-sandbox')
+// app.commandLine.appendSwitch('no-sandbox')
+// app.commandLine.appendSwitch('disable-dev-shm-usage')
+// app.commandLine.appendSwitch('disable-features=VizDisplayCompositor')
 
 interface Config {
   focusMinutes: number
-  autoStart: boolean
   soundEnabled: boolean
 }
 
@@ -30,7 +29,6 @@ const store = new Store<StoreSchema>({
     isPinned: false,
     config: {
       focusMinutes: 25,
-      autoStart: false,
       soundEnabled: true
     },
     sessions: []

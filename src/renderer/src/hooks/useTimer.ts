@@ -46,13 +46,6 @@ export function useTimer(
     if (configRef.current.soundEnabled) {
       playCompletionSound()
     }
-
-    if (configRef.current.autoStart) {
-      setTimeout(() => {
-        setTimeLeft(configRef.current.focusMinutes * 60)
-        setIsRunning(true)
-      }, 1500)
-    }
   }, [timeLeft, isRunning, configRef, onSessionComplete])
 
   const toggleTimer = useCallback(() => {

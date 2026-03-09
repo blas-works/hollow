@@ -2,7 +2,6 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 interface Config {
   focusMinutes: number
-  autoStart: boolean
   soundEnabled: boolean
 }
 
