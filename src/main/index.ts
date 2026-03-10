@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, nativeImage } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
@@ -33,7 +33,17 @@ function createWindow(): void {
   const initWidth = 260
   const initHeight = 160
 
+  let iconPath: string
+  if (is.dev) {
+    iconPath = join(__dirname, '../../resources/icon.png')
+  } else {
+    iconPath = join(process.resourcesPath, 'icon.png')
+  }
+
+  const icon = nativeImage.createFromPath(iconPath)
+
   mainWindow = new BrowserWindow({
+    icon,
     width: initWidth,
     height: initHeight,
     frame: false,

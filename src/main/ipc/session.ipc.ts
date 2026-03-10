@@ -1,5 +1,6 @@
-import { ipcMain, dialog, BrowserWindow, Notification } from 'electron'
+import { ipcMain, dialog, BrowserWindow, Notification, nativeImage } from 'electron'
 import { writeFile } from 'fs/promises'
+import { join } from 'path'
 import { sessionRepository, streakRepository } from '../../database/repositories'
 import { statsService } from '../../database/services/stats.service'
 import type { NewSession } from '../../database/schema'
@@ -82,9 +83,12 @@ export function registerSessionIPC(): void {
     const csv = [header, ...rows].join('\n')
     await writeFile(filePath, csv, 'utf-8')
 
+    const icon = nativeImage.createFromPath(join(process.resourcesPath, 'icon.png'))
+
     new Notification({
       title: 'Exportación completada',
-      body: `Se exportaron ${allSessions.length} sesiones a CSV`
+      body: `Se exportaron ${allSessions.length} sesiones a CSV`,
+      icon
     }).show()
 
     return true

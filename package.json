@@ -16,7 +16,8 @@
     "build:unpack": "bun run build && electron-builder --dir",
     "build:win": "bun run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^4.0.0",
@@ -40,6 +41,7 @@
     "drizzle-kit": "^0.31.9",
     "electron": "^39.2.6",
     "electron-builder": "^26.0.12",
+    "electron-icon-builder": "^2.0.1",
     "electron-vite": "^5.0.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react": "^7.37.5",
