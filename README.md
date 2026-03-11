@@ -1,4 +1,4 @@
-# Hollow
+# Hollow App
 
 A minimal Pomodoro timer for desktop.
 
