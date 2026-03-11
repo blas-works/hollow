@@ -16,7 +16,7 @@ export function initDatabase(): void {
 
   const migrationsFolder = is.dev
     ? join(process.cwd(), 'src/database/migrations')
-    : join(process.resourcesPath, 'migrations')
+    : join(app.getAppPath(), 'resources/migrations')
 
   migrate(db, { migrationsFolder })
 }
