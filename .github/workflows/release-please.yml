@@ -73,7 +73,7 @@ jobs:
           rm -rf resources/migrations
           cp -r src/database/migrations resources/migrations
           bun run build
-          bunx electron-builder --mac --publish always
+          bunx electron-builder --mac --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
