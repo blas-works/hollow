@@ -87,7 +87,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  create-release:
+  update-release-notes:
     needs: [build-windows, build-macos, build-linux]
     runs-on: ubuntu-latest
     steps:
@@ -96,24 +96,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get version from tag
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
-      - name: Update GitHub Release with changelog
+      - name: Generate release notes
+        run: bun run scripts/generate-release-notes.ts > /tmp/release-notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          VERSION=${{ steps.get_version.outputs.VERSION }}
 
-          if [ -f CHANGELOG.md ]; then
-            CHANGELOG=$(awk "/## ${VERSION}/ {flag=1; next} /^## / {flag=0} flag {print}" CHANGELOG.md | sed '/^$/d')
-
-            if [ -z "$CHANGELOG" ]; then
-              CHANGELOG="### Changes\n\n- Version ${VERSION} release"
-            fi
-          else
-            CHANGELOG="### Changes\n\n- Version ${VERSION} release"
-          fi
-
-          gh release edit ${{ github.ref_name }} --notes="$CHANGELOG"
+      - name: Update GitHub release
+        run: gh release edit "${{ github.ref_name }}" --notes-file /tmp/release-notes.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
