@@ -1,6 +1,6 @@
 {
   "name": "hollow",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "A minimal Pomodoro timer for desktop",
   "author": "torrescereno",
   "homepage": "https://github.com/torrescereno/hollow",
@@ -20,7 +20,7 @@
     "build:mac": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --mac",
     "build:linux": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --linux",
     "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png",
-    "release": "standard-version && git push --follow-tags",
+    "release": "sh -c 'standard-version \"$@\" && git push --follow-tags' --",
     "release:first": "standard-version --first-release && git push --follow-tags"
   },
   "dependencies": {
