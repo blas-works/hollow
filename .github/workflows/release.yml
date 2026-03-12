@@ -100,17 +100,23 @@ jobs:
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
-      - name: Generate changelog
+      - name: Extract changelog for this version
         id: changelog
         run: |
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          if [ -z "$PREVIOUS_TAG" ]; then
-            CHANGELOG=$(git log --pretty=format:"- %s" --no-merges)
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+
+          if [ -f CHANGELOG.md ]; then
+            CHANGELOG=$(awk "/## ${VERSION}/ {flag=1; next} /^## / {flag=0} flag {print}" CHANGELOG.md | sed '/^$/d')
+
+            if [ -z "$CHANGELOG" ]; then
+              CHANGELOG="### Changes\n\n- Version ${VERSION} release"
+            fi
           else
-            CHANGELOG=$(git log --pretty=format:"- %s" --no-merges ${PREVIOUS_TAG}..HEAD)
+            CHANGELOG="### Changes\n\n- Version ${VERSION} release"
           fi
+
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo -e "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
