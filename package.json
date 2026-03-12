@@ -19,9 +19,7 @@
     "build:win": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && bun run build && electron-builder --win",
     "build:mac": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --mac",
     "build:linux": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --linux",
-    "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png",
-    "release": "sh -c 'standard-version \"$@\" && git push --follow-tags' --",
-    "release:first": "standard-version --first-release && git push --follow-tags"
+    "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^4.0.0",
@@ -57,7 +55,6 @@
     "prettier": "^3.7.4",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
-    "standard-version": "^9.5.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "^7.2.6"
