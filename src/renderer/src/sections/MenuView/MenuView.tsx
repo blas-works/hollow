@@ -37,7 +37,13 @@ export function MenuView({
   ]
 
   return (
-    <div className="absolute inset-0 flex bg-bg-window transform-gpu backface-hidden">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.15, ease: 'easeInOut' }}
+      className="absolute inset-0 flex bg-bg-window transform-gpu backface-hidden"
+    >
       <div className="app-drag w-56 shrink-0 border-r border-white/5 bg-bg-window p-6 flex flex-col">
         <BackButton onClick={onBack} />
         <MenuNav activeTab={menuTab} onTabChange={onMenuTabChange} items={menuItems} />
@@ -75,6 +81,6 @@ export function MenuView({
           </motion.div>
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   )
 }

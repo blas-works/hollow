@@ -22,20 +22,11 @@ export function useStats(): UseStatsReturn {
 
   const loadStats = useCallback(async () => {
     const apiStats = await sessionsService.getFullStats()
-    setStats({
-      today: { sessions: apiStats.today.sessions, minutes: apiStats.today.minutes },
-      week: { sessions: apiStats.week.sessions, minutes: apiStats.week.minutes },
-      total: { sessions: apiStats.total.sessions, minutes: apiStats.total.minutes },
-      streak: apiStats.streak,
-      bestStreak: apiStats.bestStreak,
-      avgPerDay: apiStats.avgPerDay,
-      longestSession: apiStats.longestSession,
-      completionRate: apiStats.completionRate,
-      weeklyActivity: apiStats.weeklyActivity
-    })
+    setStats(apiStats)
   }, [])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadStats()
   }, [loadStats])
 

@@ -9,7 +9,11 @@ interface StatsSectionProps {
   onExportCsv: () => void
 }
 
-export function StatsSection({ stats, onClear, onExportCsv }: StatsSectionProps): React.JSX.Element {
+export function StatsSection({
+  stats,
+  onClear,
+  onExportCsv
+}: StatsSectionProps): React.JSX.Element {
   const [confirmClear, setConfirmClear] = useState(false)
 
   const handleClear = (): void => {

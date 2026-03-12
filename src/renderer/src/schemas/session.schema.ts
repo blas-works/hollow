@@ -14,7 +14,10 @@ export interface SessionStats {
   total: { count: number; totalMinutes: number }
 }
 
-export interface FullSessionStats extends SessionStats {
+export interface FullSessionStats {
+  today: { sessions: number; minutes: number }
+  week: { sessions: number; minutes: number }
+  total: { sessions: number; minutes: number }
   streak: number
   bestStreak: number
   avgPerDay: number

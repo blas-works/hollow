@@ -185,7 +185,6 @@ ipcMain.handle('resize-window', async (_event, targetW: number, targetH: number)
 
   const centerX = startX + startW / 2
   const centerY = startY + startH / 2
-
   const x = Math.round(centerX - targetW / 2)
   const y = Math.round(centerY - targetH / 2)
 

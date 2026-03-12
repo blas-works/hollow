@@ -59,9 +59,9 @@ class ElectronService {
   async getFullSessionStats(): Promise<FullSessionStats> {
     return (
       (await this.api?.session.getFullStats()) ?? {
-        today: { count: 0, totalMinutes: 0 },
-        week: { count: 0, totalMinutes: 0 },
-        total: { count: 0, totalMinutes: 0 },
+        today: { sessions: 0, minutes: 0 },
+        week: { sessions: 0, minutes: 0 },
+        total: { sessions: 0, minutes: 0 },
         streak: 0,
         bestStreak: 0,
         avgPerDay: 0,

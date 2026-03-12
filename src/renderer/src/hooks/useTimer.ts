@@ -28,6 +28,7 @@ export function useTimer(
   // Sync focusMinutes changes (only during focus phase)
   useEffect(() => {
     if (timerPhase === 'focus') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTimeLeft(focusMinutes * 60)
     }
   }, [focusMinutes, timerPhase])
@@ -35,6 +36,7 @@ export function useTimer(
   // Sync restMinutes changes (only during rest phase when not running)
   useEffect(() => {
     if (timerPhase === 'rest' && !isRunning) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTimeLeft(restMinutes * 60)
     }
   }, [restMinutes, timerPhase, isRunning])
@@ -50,6 +52,7 @@ export function useTimer(
   useEffect(() => {
     if (timeLeft !== 0 || !isRunning) return
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsRunning(false)
 
     if (timerPhase === 'focus') {
