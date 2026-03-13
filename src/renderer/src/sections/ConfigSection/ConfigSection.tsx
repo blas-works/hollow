@@ -1,7 +1,8 @@
-import React from 'react'
-import { ConfigSlider, Toggle, SoundSelector, SliderWarning } from '../../components'
+import React, { useState, useEffect, useRef } from 'react'
+import { RefreshCw, Check } from 'lucide-react'
+import { ConfigSlider, Toggle, SoundSelector, SliderWarning, Button } from '../../components'
 import { useSound } from '../../hooks'
-import type { AppConfig } from '../../schemas'
+import type { AppConfig, UpdateInfo } from '../../schemas'
 import { MIN_MINUTES, MAX_MINUTES, MAX_REST_MINUTES, FOCUS_WARNING_THRESHOLD } from '../../schemas'
 
 interface ConfigSectionProps {
@@ -9,15 +10,63 @@ interface ConfigSectionProps {
   isRunning: boolean
   onUpdate: (partial: Partial<AppConfig>) => void
   onTimeReset: (minutes: number) => void
+  onCheckUpdate: () => void
+  updateInfo: UpdateInfo | null
 }
 
 export function ConfigSection({
   config,
   isRunning,
   onUpdate,
-  onTimeReset
+  onTimeReset,
+  onCheckUpdate,
+  updateInfo
 }: ConfigSectionProps): React.JSX.Element {
   const { preview, stop } = useSound()
+  const [checking, setChecking] = useState(false)
+  const [upToDate, setUpToDate] = useState(false)
+  const wasChecking = useRef(false)
+
+  const isUpdating = updateInfo?.available === true
+  const isDownloading = isUpdating && !updateInfo.downloaded && (updateInfo.progress ?? 0) < 100
+  const isReady = isUpdating && updateInfo.downloaded === true
+
+  useEffect(() => {
+    if (checking) {
+      wasChecking.current = true
+      return
+    }
+
+    if (wasChecking.current && !isUpdating) {
+      setUpToDate(true)
+      const timeout = setTimeout(() => setUpToDate(false), 3000)
+      wasChecking.current = false
+      return () => clearTimeout(timeout)
+    }
+
+    wasChecking.current = false
+  }, [checking, isUpdating])
+
+  useEffect(() => {
+    if (!checking || !updateInfo) return
+    setChecking(false)
+  }, [updateInfo, checking])
+
+  const handleCheckUpdate = (): void => {
+    setChecking(true)
+    setUpToDate(false)
+    onCheckUpdate()
+    setTimeout(() => setChecking(false), 5000)
+  }
+
+  const getUpdateLabel = (): string => {
+    if (isReady) return 'Actualización lista'
+    if (isDownloading) return `Descargando... ${updateInfo?.progress ?? 0}%`
+    if (isUpdating) return 'Actualizando...'
+    if (checking) return 'Verificando...'
+    if (upToDate) return 'Todo al día'
+    return 'Buscar actualizaciones'
+  }
 
   return (
     <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto pr-2 -mr-2">
@@ -67,6 +116,20 @@ export function ConfigSection({
           />
         )}
       </div>
+
+      <Button
+        variant="update"
+        onClick={handleCheckUpdate}
+        disabled={checking || isDownloading}
+        className={upToDate ? 'text-green-400/50' : ''}
+      >
+        {upToDate ? (
+          <Check size={12} strokeWidth={1.5} />
+        ) : (
+          <RefreshCw size={12} strokeWidth={1.5} className={checking || isDownloading ? 'animate-spin' : ''} />
+        )}
+        {getUpdateLabel()}
+      </Button>
     </div>
   )
 }

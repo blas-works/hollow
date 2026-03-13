@@ -26,7 +26,7 @@ export default function App(): React.JSX.Element {
   const { timeLeft, isRunning, timerPhase, toggleTimer, resetTimer, skipRest, setTimeLeft } =
     useTimer(config.focusMinutes, config.restMinutes, configRef, logSession)
 
-  const { updateInfo, restartNow, snoozeUpdate, dismissUpdate } = useUpdate()
+  const { updateInfo, checkForUpdates, restartNow, snoozeUpdate, dismissUpdate } = useUpdate()
 
   const size = view === 'menu' ? MENU_SIZE : TIMER_SIZE
   const borderRadius = view === 'menu' ? 'rounded-[2rem]' : 'rounded-[1.5rem]'
@@ -71,6 +71,8 @@ export default function App(): React.JSX.Element {
               onTimeReset={(val) => setTimeLeft(val * 60)}
               onClearSessions={clearSessions}
               onExportCsv={exportCsv}
+              onCheckUpdate={checkForUpdates}
+              updateInfo={updateInfo}
               onBack={() => switchView('timer')}
             />
           ) : null}

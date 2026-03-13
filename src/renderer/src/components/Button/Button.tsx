@@ -5,7 +5,7 @@ interface ButtonProps {
   onClick?: () => void
   title?: string
   className?: string
-  variant?: 'icon' | 'play' | 'back' | 'clear' | 'export'
+  variant?: 'icon' | 'play' | 'back' | 'clear' | 'export' | 'update'
   isActive?: boolean
   disabled?: boolean
 }
@@ -17,7 +17,9 @@ const variantStyles = {
   clear:
     'flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/15 hover:text-red-400/50 mt-4',
   export:
-    'flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/15 hover:text-green-400/50 mt-4'
+    'flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/15 hover:text-green-400/50 mt-4',
+  update:
+    'flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/15 hover:text-blue-400/50 mt-4'
 } as const
 
 export function Button({

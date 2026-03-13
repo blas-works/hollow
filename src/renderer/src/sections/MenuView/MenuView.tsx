@@ -4,7 +4,7 @@ import { BarChart2, Settings } from 'lucide-react'
 import { BackButton, MenuNav, MenuFooter } from '../../components'
 import { StatsSection } from '../StatsSection'
 import { ConfigSection } from '../ConfigSection'
-import type { Stats, AppConfig, MenuTab } from '../../schemas'
+import type { Stats, AppConfig, MenuTab, UpdateInfo } from '../../schemas'
 
 interface MenuViewProps {
   menuTab: MenuTab
@@ -16,6 +16,8 @@ interface MenuViewProps {
   onTimeReset: (minutes: number) => void
   onClearSessions: () => void
   onExportCsv: () => void
+  onCheckUpdate: () => void
+  updateInfo: UpdateInfo | null
   onBack: () => void
 }
 
@@ -29,6 +31,8 @@ export function MenuView({
   onTimeReset,
   onClearSessions,
   onExportCsv,
+  onCheckUpdate,
+  updateInfo,
   onBack
 }: MenuViewProps): React.JSX.Element {
   const menuItems = [
@@ -79,6 +83,8 @@ export function MenuView({
                 isRunning={isRunning}
                 onUpdate={onUpdateConfig}
                 onTimeReset={onTimeReset}
+                onCheckUpdate={onCheckUpdate}
+                updateInfo={updateInfo}
               />
             )}
           </motion.div>
