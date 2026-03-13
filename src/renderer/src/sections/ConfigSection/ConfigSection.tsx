@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { RefreshCw, Check } from 'lucide-react'
 import { ConfigSlider, Toggle, SoundSelector, SliderWarning, Button } from '../../components'
 import { useSound } from '../../hooks'
@@ -25,38 +25,27 @@ export function ConfigSection({
   const { preview, stop } = useSound()
   const [checking, setChecking] = useState(false)
   const [upToDate, setUpToDate] = useState(false)
-  const wasChecking = useRef(false)
+  const updateInfoRef = useRef(updateInfo)
+  useEffect(() => {
+    updateInfoRef.current = updateInfo
+  })
 
   const isUpdating = updateInfo?.available === true
   const isDownloading = isUpdating && !updateInfo.downloaded && (updateInfo.progress ?? 0) < 100
   const isReady = isUpdating && updateInfo.downloaded === true
 
-  useEffect(() => {
-    if (checking) {
-      wasChecking.current = true
-      return
-    }
-
-    if (wasChecking.current && !isUpdating) {
-      setUpToDate(true)
-      const timeout = setTimeout(() => setUpToDate(false), 3000)
-      wasChecking.current = false
-      return () => clearTimeout(timeout)
-    }
-
-    wasChecking.current = false
-  }, [checking, isUpdating])
-
-  useEffect(() => {
-    if (!checking || !updateInfo) return
-    setChecking(false)
-  }, [updateInfo, checking])
-
   const handleCheckUpdate = (): void => {
     setChecking(true)
     setUpToDate(false)
     onCheckUpdate()
-    setTimeout(() => setChecking(false), 5000)
+
+    setTimeout(() => {
+      setChecking(false)
+      if (!updateInfoRef.current?.available) {
+        setUpToDate(true)
+        setTimeout(() => setUpToDate(false), 3000)
+      }
+    }, 4000)
   }
 
   const getUpdateLabel = (): string => {
@@ -126,7 +115,11 @@ export function ConfigSection({
         {upToDate ? (
           <Check size={12} strokeWidth={1.5} />
         ) : (
-          <RefreshCw size={12} strokeWidth={1.5} className={checking || isDownloading ? 'animate-spin' : ''} />
+          <RefreshCw
+            size={12}
+            strokeWidth={1.5}
+            className={checking || isDownloading ? 'animate-spin' : ''}
+          />
         )}
         {getUpdateLabel()}
       </Button>
