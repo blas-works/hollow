@@ -1,5 +1,5 @@
 import { electronService } from './electron.service'
-import type { SessionRecord, SessionStats, FullSessionStats } from '../schemas'
+import type { SessionRecord, FullSessionStats } from '../schemas'
 
 class SessionsService {
   async load(): Promise<SessionRecord[]> {
@@ -8,10 +8,6 @@ class SessionsService {
 
   async create(session: Omit<SessionRecord, 'id' | 'createdAt'>): Promise<SessionRecord> {
     return await electronService.createSession(session)
-  }
-
-  async getStats(): Promise<SessionStats> {
-    return await electronService.getSessionStats()
   }
 
   async getFullStats(): Promise<FullSessionStats> {

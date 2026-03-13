@@ -1,21 +1,15 @@
-import { app, BrowserWindow, ipcMain, nativeImage } from 'electron'
+import { app, BrowserWindow, nativeImage } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
-import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'fs'
-import { homedir } from 'os'
 import { is } from '@electron-toolkit/utils'
 import { setupAutoUpdater, checkForUpdates } from './autoUpdater'
 import { initDatabase, closeDatabase } from '../database/client'
-import { registerSessionIPC } from './ipc'
+import { registerSessionIPC, registerWindowIPC, registerConfigIPC } from './ipc'
+import type { AppConfig } from '../shared/types'
 
-interface Config {
-  focusMinutes: number
-  soundEnabled: boolean
-}
-
-interface StoreSchema {
+export interface StoreSchema {
   isPinned: boolean
-  config: Config
+  config: AppConfig
 }
 
 const store = new Store<StoreSchema>({
@@ -23,7 +17,9 @@ const store = new Store<StoreSchema>({
     isPinned: false,
     config: {
       focusMinutes: 25,
-      soundEnabled: true
+      restMinutes: 2,
+      soundEnabled: true,
+      selectedSound: 'bell'
     }
   }
 })
@@ -64,7 +60,7 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
       nodeIntegration: false,
-      experimentalFeatures: true,
+      // Required by better-sqlite3 (native addon)
       sandbox: false
     }
   })
@@ -86,63 +82,36 @@ function createWindow(): void {
   })
 }
 
-// ── Single instance lock ──
+// ── Single instance lock (native Electron API) ──
 
-const LOCK_FILE = join(homedir(), '.hollow.lock')
+const gotTheLock = app.requestSingleInstanceLock()
 
-function isAnotherInstanceRunning(): boolean {
-  if (existsSync(LOCK_FILE)) {
-    try {
-      const pid = parseInt(readFileSync(LOCK_FILE, 'utf-8').trim(), 10)
-      process.kill(pid, 0)
-      return true
-    } catch {
-      try {
-        unlinkSync(LOCK_FILE)
-      } catch {
-        // ignore
-      }
-    }
-  }
-  return false
-}
-
-function acquireLock(): void {
-  writeFileSync(LOCK_FILE, String(process.pid), 'utf-8')
-}
-
-function releaseLock(): void {
-  try {
-    const content = readFileSync(LOCK_FILE, 'utf-8').trim()
-    if (content === String(process.pid)) {
-      unlinkSync(LOCK_FILE)
-    }
-  } catch {
-    // ignore
-  }
-}
-
-if (isAnotherInstanceRunning()) {
-  app.exit(0)
+if (!gotTheLock) {
+  app.quit()
 } else {
-  acquireLock()
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+  })
 
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
       closeDatabase()
-      releaseLock()
       app.quit()
     }
   })
 
   app.on('before-quit', () => {
     closeDatabase()
-    releaseLock()
   })
 
   app.whenReady().then(() => {
     initDatabase()
     registerSessionIPC()
+    registerWindowIPC(() => mainWindow, store)
+    registerConfigIPC(store)
     createWindow()
 
     if (!is.dev) {
@@ -158,53 +127,3 @@ if (isAnotherInstanceRunning()) {
     })
   })
 }
-
-// ── Pin ──
-
-ipcMain.handle('set-always-on-top', (_event, isPinned: boolean) => {
-  if (mainWindow) {
-    mainWindow.setAlwaysOnTop(isPinned)
-    store.set('isPinned', isPinned)
-  }
-  return isPinned
-})
-
-ipcMain.handle('get-pinned-state', () => {
-  return store.get('isPinned', false)
-})
-
-// ── Window ──
-
-ipcMain.handle('resize-window', async (_event, targetW: number, targetH: number) => {
-  if (!mainWindow) return
-
-  const [startW, startH] = mainWindow.getSize()
-  const [startX, startY] = mainWindow.getPosition()
-
-  if (startW === targetW && startH === targetH) return
-
-  const centerX = startX + startW / 2
-  const centerY = startY + startH / 2
-  const x = Math.round(centerX - targetW / 2)
-  const y = Math.round(centerY - targetH / 2)
-
-  mainWindow.setBounds({ x, y, width: targetW, height: targetH })
-})
-
-ipcMain.handle('minimize-window', () => {
-  if (mainWindow) mainWindow.minimize()
-})
-
-ipcMain.handle('close-window', () => {
-  if (mainWindow) mainWindow.close()
-})
-
-// ── Config ──
-
-ipcMain.handle('save-config', (_event, config: Config) => {
-  store.set('config', config)
-})
-
-ipcMain.handle('load-config', () => {
-  return store.get('config')
-})

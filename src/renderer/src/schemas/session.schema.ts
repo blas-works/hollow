@@ -8,12 +8,6 @@ export interface SessionRecord {
   createdAt?: Date | number | null
 }
 
-export interface SessionStats {
-  today: { count: number; totalMinutes: number }
-  week: { count: number; totalMinutes: number }
-  total: { count: number; totalMinutes: number }
-}
-
 export interface FullSessionStats {
   today: { sessions: number; minutes: number }
   week: { sessions: number; minutes: number }

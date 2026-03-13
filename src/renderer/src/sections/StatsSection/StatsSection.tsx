@@ -1,6 +1,6 @@
 import { Download, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
-import { StatCard } from '../../components'
+import { Button, StatCard } from '../../components'
 import type { Stats } from '../../schemas'
 
 interface StatsSectionProps {
@@ -93,21 +93,18 @@ export function StatsSection({
 
       {(stats.total?.sessions || 0) > 0 && (
         <div className="flex items-center gap-4 mt-4">
-          <button
-            onClick={onExportCsv}
-            className="app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 text-white/25 hover:text-white/50 focus-ring"
-          >
+          <Button variant="clear" onClick={onExportCsv}>
             <Download size={12} strokeWidth={1.5} />
             Exportar CSV
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="clear"
             onClick={handleClear}
-            className={`app-no-drag flex items-center gap-2 text-[0.6875rem] transition-colors duration-200 focus-ring
-              ${confirmClear ? 'text-red-400/75' : 'text-white/25 hover:text-red-400/50'}`}
+            className={confirmClear ? 'text-red-400/75' : ''}
           >
             <Trash2 size={12} strokeWidth={1.5} />
             {confirmClear ? 'Clic para confirmar' : 'Borrar datos'}
-          </button>
+          </Button>
         </div>
       )}
     </div>

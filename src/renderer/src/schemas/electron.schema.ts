@@ -1,5 +1,5 @@
 import type { AppConfig } from './config.schema'
-import type { SessionRecord, SessionStats, FullSessionStats } from './session.schema'
+import type { SessionRecord, FullSessionStats } from './session.schema'
 
 export interface ElectronAPI {
   setAlwaysOnTop: (isPinned: boolean) => Promise<boolean>
@@ -13,7 +13,6 @@ export interface ElectronAPI {
   session: {
     create: (data: Omit<SessionRecord, 'id' | 'createdAt'>) => Promise<SessionRecord>
     getAll: () => Promise<SessionRecord[]>
-    getStats: () => Promise<SessionStats>
     getFullStats: () => Promise<FullSessionStats>
     clear: () => Promise<void>
     exportCsv: () => Promise<boolean>

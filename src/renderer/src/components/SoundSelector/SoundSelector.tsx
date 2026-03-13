@@ -6,7 +6,6 @@ import { SOUND_OPTIONS } from '../../schemas'
 
 interface SoundSelectorProps {
   selectedSound: string
-  isPlaying: boolean
   onSelect: (soundId: string) => void
   onPreview: (soundId: string) => void
 }

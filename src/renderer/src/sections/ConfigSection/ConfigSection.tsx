@@ -17,7 +17,7 @@ export function ConfigSection({
   onUpdate,
   onTimeReset
 }: ConfigSectionProps): React.JSX.Element {
-  const { isPlaying, preview, stop } = useSound()
+  const { preview, stop } = useSound()
 
   return (
     <div className="app-no-drag flex flex-1 flex-col gap-5 overflow-y-auto pr-2 -mr-2">
@@ -56,7 +56,6 @@ export function ConfigSection({
         {config.soundEnabled && (
           <SoundSelector
             selectedSound={config.selectedSound}
-            isPlaying={isPlaying}
             onSelect={(soundId) => onUpdate({ selectedSound: soundId })}
             onPreview={preview}
           />

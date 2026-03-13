@@ -1,14 +1,10 @@
+export type { AppConfig } from '../../../shared/types'
+import type { AppConfig } from '../../../shared/types'
+
 export interface SoundOption {
   id: string
   name: string
   filename: string
-}
-
-export interface AppConfig {
-  focusMinutes: number
-  restMinutes: number
-  soundEnabled: boolean
-  selectedSound: string
 }
 
 export const SOUND_OPTIONS: SoundOption[] = [
