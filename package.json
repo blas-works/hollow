@@ -19,7 +19,11 @@
     "build:win": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && bun run build && electron-builder --win",
     "build:mac": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --mac",
     "build:linux": "rm -rf resources/migrations && cp -r src/database/migrations resources/migrations && electron-vite build && electron-builder --linux",
-    "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png"
+    "generate:icons": "electron-icon-builder --input=src/renderer/public/images/icon.png --output=build && cp build/icons/png/512x512.png resources/icon.png",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@electron-toolkit/utils": "^4.0.0",
@@ -38,11 +42,16 @@
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@tailwindcss/vite": "^4.2.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.19.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
     "drizzle-kit": "^0.31.9",
     "electron": "^39.2.6",
     "electron-builder": "^26.0.12",
@@ -52,11 +61,14 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "happy-dom": "^20.8.4",
+    "jsdom": "^28.1.0",
     "prettier": "^3.7.4",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
-    "vite": "^7.2.6"
+    "vite": "^7.2.6",
+    "vitest": "^4.1.0"
   }
 }

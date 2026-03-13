@@ -7,3 +7,13 @@ out
 *.tsbuildinfo
 build/icons/
 resources/migrations/
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Test artifacts
+.vitest/
+vitest-results.json
+test-results/
