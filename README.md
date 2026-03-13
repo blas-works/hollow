@@ -179,15 +179,13 @@ graph TB
 
 <div align="center">
 
-> **🖼️ Próximamente:** Capturas de pantalla de la aplicación
+|                       Timer View                        |                       Config View                        |
+| :-----------------------------------------------------: | :------------------------------------------------------: |
+| <img width="360" src="resources/screenshots/timer.png"> | <img width="360" src="resources/screenshots/config.png"> |
 
-|  Timer View   |   Menu View   |
-| :-----------: | :-----------: |
-| _Placeholder_ | _Placeholder_ |
-
-|  Config View  |  Stats View   |
-| :-----------: | :-----------: |
-| _Placeholder_ | _Placeholder_ |
+|                       Stats View                        |
+| :-----------------------------------------------------: |
+| <img width="360" src="resources/screenshots/stats.png"> |
 
 </div>
 
