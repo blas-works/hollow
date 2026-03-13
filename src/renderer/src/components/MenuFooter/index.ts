@@ -1,0 +1,1 @@
+export { MenuFooter } from './MenuFooter'

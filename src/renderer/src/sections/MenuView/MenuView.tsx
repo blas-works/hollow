@@ -1,7 +1,7 @@
 import React from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { BarChart2, Settings } from 'lucide-react'
-import { BackButton, MenuNav } from '../../components'
+import { BackButton, MenuNav, MenuFooter } from '../../components'
 import { StatsSection } from '../StatsSection'
 import { ConfigSection } from '../ConfigSection'
 import type { Stats, AppConfig, MenuTab } from '../../schemas'
@@ -47,6 +47,7 @@ export function MenuView({
       <aside className="app-drag w-56 shrink-0 border-r border-white/5 bg-bg-window p-6 flex flex-col">
         <BackButton onClick={onBack} />
         <MenuNav activeTab={menuTab} onTabChange={onMenuTabChange} items={menuItems} />
+        <MenuFooter />
       </aside>
 
       <section className="flex-1 p-10 bg-bg-window overflow-hidden flex flex-col">

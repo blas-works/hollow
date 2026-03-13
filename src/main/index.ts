@@ -4,7 +4,7 @@ import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import { setupAutoUpdater, checkForUpdates } from './autoUpdater'
 import { initDatabase, closeDatabase } from '../database/client'
-import { registerSessionIPC, registerWindowIPC, registerConfigIPC } from './ipc'
+import { registerSessionIPC, registerWindowIPC, registerConfigIPC, registerAppIPC } from './ipc'
 import type { AppConfig } from '../shared/types'
 
 export interface StoreSchema {
@@ -112,6 +112,7 @@ if (!gotTheLock) {
     registerSessionIPC()
     registerWindowIPC(() => mainWindow, store)
     registerConfigIPC(store)
+    registerAppIPC()
     createWindow()
 
     if (!is.dev) {

@@ -69,6 +69,14 @@ class ElectronService {
   async exportSessionsCsv(): Promise<boolean> {
     return (await this.api?.session.exportCsv()) ?? false
   }
+
+  async openExternal(url: string): Promise<boolean> {
+    return (await this.api?.openExternal(url)) ?? false
+  }
+
+  async getAppVersion(): Promise<string> {
+    return (await this.api?.getAppVersion()) ?? '0.0.0'
+  }
 }
 
 export const electronService = new ElectronService()

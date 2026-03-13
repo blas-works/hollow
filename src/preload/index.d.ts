@@ -47,6 +47,8 @@ interface ElectronAPI {
     clear: () => Promise<void>
     exportCsv: () => Promise<boolean>
   }
+  openExternal: (url: string) => Promise<boolean>
+  getAppVersion: () => Promise<string>
 }
 
 declare global {

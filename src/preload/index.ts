@@ -21,5 +21,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getFullStats: (): Promise<FullSessionStats> => ipcRenderer.invoke('session:get-full-stats'),
     clear: () => ipcRenderer.invoke('session:clear'),
     exportCsv: (): Promise<boolean> => ipcRenderer.invoke('session:export-csv')
-  }
+  },
+
+  openExternal: (url: string): Promise<boolean> => ipcRenderer.invoke('shell:open-external', url),
+  getAppVersion: (): Promise<string> => ipcRenderer.invoke('app:get-version')
 })
