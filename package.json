@@ -28,6 +28,7 @@
   "dependencies": {
     "@electron-toolkit/utils": "^4.0.0",
     "better-sqlite3": "^12.6.2",
+    "canvas-confetti": "^1.9.4",
     "drizzle-orm": "^0.45.1",
     "electron-store": "^8.2.0",
     "electron-updater": "^6.8.3",
@@ -46,6 +47,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/better-sqlite3": "^7.6.13",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22.19.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
