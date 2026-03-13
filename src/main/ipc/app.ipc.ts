@@ -1,4 +1,5 @@
 import { app, ipcMain, shell } from 'electron'
+import { validateExternalUrl } from '../utils/urlValidator'
 
 export function registerAppIPC(): void {
   ipcMain.handle('app:get-version', () => {
@@ -6,6 +7,13 @@ export function registerAppIPC(): void {
   })
 
   ipcMain.handle('shell:open-external', async (_event, url: string) => {
+    const validation = validateExternalUrl(url)
+
+    if (!validation.isValid) {
+      console.warn('Blocked URL:', validation.error)
+      return false
+    }
+
     try {
       await shell.openExternal(url)
       return true
