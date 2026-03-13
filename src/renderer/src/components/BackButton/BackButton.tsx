@@ -1,5 +1,6 @@
 import React from 'react'
 import { ArrowLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface BackButtonProps {
   onClick: () => void
@@ -8,12 +9,9 @@ interface BackButtonProps {
 
 export function BackButton({ onClick, label = 'Volver' }: BackButtonProps): React.JSX.Element {
   return (
-    <button
-      onClick={onClick}
-      className="app-no-drag btn-back flex items-center gap-2.5 text-white/40 transition-colors duration-200 hover:text-white/75 mb-10 w-fit"
-    >
+    <Button variant="back" onClick={onClick} className="app-no-drag btn-back">
       <ArrowLeft size={15} strokeWidth={1.5} className="transition-transform duration-200" />
       <span className="text-xs font-medium tracking-widest uppercase">{label}</span>
-    </button>
+    </Button>
   )
 }

@@ -1,4 +1,6 @@
 import React from 'react'
+import { Card } from '@/components/ui/card'
+import { cn } from '@/lib/utils'
 
 interface StatCardProps {
   label: string
@@ -13,18 +15,20 @@ export function StatCard({
   subtext,
   variant = 'primary'
 }: StatCardProps): React.JSX.Element {
-  const isSecondary = variant === 'secondary'
-
   return (
-    <div
-      className={`rounded-xl p-4 border flex flex-col items-center justify-center text-center
-        ${isSecondary ? 'bg-white/3 border-white/5 px-4 py-3' : 'bg-white/5 border-white/5'}`}
-    >
-      <p className="text-[0.625rem] text-white/25 uppercase tracking-widest mb-1 whitespace-nowrap">
+    <Card variant={variant}>
+      <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1 whitespace-nowrap">
         {label}
       </p>
-      <p className={`font-light text-text-main ${isSecondary ? 'text-lg' : 'text-2xl'}`}>{value}</p>
-      {subtext && <p className="text-[0.625rem] text-white/25 mt-0.5">{subtext}</p>}
-    </div>
+      <p
+        className={cn(
+          'font-light text-foreground',
+          variant === 'secondary' ? 'text-lg' : 'text-2xl'
+        )}
+      >
+        {value}
+      </p>
+      {subtext && <p className="text-xs text-muted-foreground mt-0.5">{subtext}</p>}
+    </Card>
   )
 }

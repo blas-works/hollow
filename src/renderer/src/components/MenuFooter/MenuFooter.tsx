@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Github } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { electronService } from '../../services/electron.service'
 
 export function MenuFooter(): React.JSX.Element {
@@ -14,16 +15,20 @@ export function MenuFooter(): React.JSX.Element {
   }
 
   return (
-    <div className="app-no-drag mt-auto pt-4 border-t border-white/5">
+    <div className="app-no-drag mt-auto pt-4 border-t border-border">
       <div className="flex items-center justify-between gap-3 px-3">
-        <button
+        <Button
+          variant="ghost"
+          size="icon-sm"
           onClick={handleGithubClick}
-          className="text-white/25 hover:text-white/40 transition-colors duration-200 cursor-pointer focus-ring rounded"
           aria-label="Visit GitHub repository"
+          className="text-muted-foreground hover:text-foreground"
         >
           <Github size={15} strokeWidth={1.5} />
-        </button>
-        <span className="text-xs text-white/25 font-light tracking-[0.025em]">v{version}</span>
+        </Button>
+        <span className="text-xs text-muted-foreground font-light tracking-[0.025em]">
+          v{version}
+        </span>
       </div>
     </div>
   )

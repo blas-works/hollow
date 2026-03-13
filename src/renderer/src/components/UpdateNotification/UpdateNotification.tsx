@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
 import type { UpdateInfo } from '../../schemas/electron.schema'
 
 interface UpdateNotificationProps {
@@ -57,6 +58,7 @@ export function UpdateNotification({
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -72,19 +74,23 @@ export function UpdateNotification({
           </div>
 
           <div className="flex gap-1.5">
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={onSnooze}
-              className="flex-1 rounded bg-white/10 px-2 py-1 text-[10px] font-medium text-white/80 transition-colors hover:bg-white/20"
+              className="flex-1 bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
             >
               5 min
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
               onClick={onRestart}
               disabled={!isDownloaded}
-              className="flex-1 rounded bg-white px-2 py-1 text-[10px] font-medium text-red-900 transition-colors hover:bg-white/90 disabled:opacity-50"
+              className="flex-1 bg-white text-red-900 hover:bg-white/90 text-[10px]"
             >
               {isDownloaded ? 'Reiniciar' : 'Descargando...'}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -100,6 +106,7 @@ export function UpdateNotification({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -114,19 +121,23 @@ export function UpdateNotification({
             {updateInfo.version && <span className="text-orange-300"> v{updateInfo.version}</span>}
           </span>
 
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onDismiss}
-            className="rounded px-1.5 py-0.5 text-[10px] text-white/60 hover:text-white/80"
+            className="text-white/60 hover:text-white/80 text-[10px]"
           >
             Later
-          </button>
+          </Button>
           {isDownloaded && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={onRestart}
-              className="rounded bg-white/20 px-1.5 py-0.5 text-[10px] font-medium text-white hover:bg-white/30"
+              className="bg-white/20 text-white hover:bg-white/30 text-[10px]"
             >
               Restart
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -135,12 +146,13 @@ export function UpdateNotification({
 
   return (
     <div className="app-no-drag absolute left-0 right-0 top-0 z-40 mx-1 mt-1">
-      <div className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1.5 text-xs backdrop-blur-sm">
+      <div className="flex items-center gap-1.5 rounded-lg bg-secondary px-2.5 py-1.5 text-xs backdrop-blur-sm">
         <svg
-          className="h-3.5 w-3.5 shrink-0 text-white/60"
+          className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -150,38 +162,44 @@ export function UpdateNotification({
           />
         </svg>
 
-        <span className="flex-1 text-white/80">
+        <span className="flex-1 text-foreground/80">
           Update{isDownloaded ? ' ready' : ' available'}
-          {updateInfo.version && <span className="text-white/60"> v{updateInfo.version}</span>}
+          {updateInfo.version && (
+            <span className="text-muted-foreground"> v{updateInfo.version}</span>
+          )}
         </span>
 
         {!isDownloaded && updateInfo.progress !== undefined && updateInfo.progress < 100 ? (
           <div className="flex items-center gap-1.5">
-            <div className="h-1 w-12 overflow-hidden rounded-full bg-white/20">
+            <div className="h-1 w-12 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full bg-white/60 transition-all"
+                className="h-full bg-foreground/60 transition-all"
                 style={{ width: `${updateInfo.progress}%` }}
               />
             </div>
-            <span className="text-[10px] text-white/40">{updateInfo.progress}%</span>
+            <span className="text-[10px] text-muted-foreground">{updateInfo.progress}%</span>
           </div>
         ) : null}
 
         {isDownloaded ? (
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onRestart}
-            className="rounded bg-white/20 px-1.5 py-0.5 text-[10px] font-medium text-white hover:bg-white/30"
+            className="bg-white/20 text-white hover:bg-white/30 text-[10px]"
           >
             Restart
-          </button>
+          </Button>
         ) : null}
 
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={onDismiss}
-          className="rounded px-1.5 py-0.5 text-[10px] text-white/40 hover:text-white/60"
+          className="text-muted-foreground hover:text-foreground/60 text-[10px]"
         >
           Dismiss
-        </button>
+        </Button>
       </div>
     </div>
   )
