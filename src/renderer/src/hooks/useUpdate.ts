@@ -10,6 +10,13 @@ export function useUpdate(): {
 } {
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null)
 
+  // const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>({
+  //   available: true,
+  //   version: '4.0.0',
+  //   downloaded: true,
+  //   priority: 'normal' // change to 'critical' or 'security' to test other variants
+  // })
+
   useEffect(() => {
     if (!window.electronAPI?.update) return
 

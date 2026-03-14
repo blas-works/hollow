@@ -50,8 +50,8 @@ export function UpdateNotification({
     const seconds = countdown % 60
 
     return (
-      <div className="app-no-drag absolute left-0 right-0 top-0 z-50 mx-1 mt-1">
-        <div className="flex flex-col gap-1.5 rounded-lg bg-red-900/95 px-2.5 py-2 text-white backdrop-blur-sm">
+      <div className="app-no-drag absolute left-0 right-0 top-0 z-50 mx-3 mt-3">
+        <div className="flex flex-col gap-1.5 rounded-[1.25rem] bg-red-900/95 px-3.5 py-2.5 text-white backdrop-blur-sm">
           <div className="flex items-center gap-1.5">
             <svg
               className="h-3.5 w-3.5 shrink-0 text-red-400"
@@ -68,7 +68,7 @@ export function UpdateNotification({
               />
             </svg>
             <span className="flex-1 text-xs font-medium">Critical update</span>
-            <span className="rounded bg-red-950/60 px-1.5 py-0.5 font-mono text-[10px] font-bold text-red-300">
+            <span className="rounded-full bg-red-950/60 px-2 py-0.5 font-mono text-[10px] font-bold text-red-300">
               {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
             </span>
           </div>
@@ -78,7 +78,7 @@ export function UpdateNotification({
               variant="ghost"
               size="sm"
               onClick={onSnooze}
-              className="flex-1 bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
+              className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
             >
               5 min
             </Button>
@@ -87,7 +87,7 @@ export function UpdateNotification({
               size="sm"
               onClick={onRestart}
               disabled={!isDownloaded}
-              className="flex-1 bg-white text-red-900 hover:bg-white/90 text-[10px]"
+              className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
             >
               {isDownloaded ? 'Reiniciar' : 'Descargando...'}
             </Button>
@@ -99,8 +99,8 @@ export function UpdateNotification({
 
   if (isSecurity) {
     return (
-      <div className="app-no-drag absolute left-0 right-0 top-0 z-40 mx-1 mt-1">
-        <div className="flex items-center gap-1.5 rounded-lg bg-orange-900/90 px-2.5 py-1.5 text-xs backdrop-blur-sm">
+      <div className="app-no-drag absolute left-0 right-0 top-0 z-40 mx-3 mt-3">
+        <div className="flex items-center gap-1.5 rounded-[1.25rem] bg-orange-900/90 px-3.5 py-2 text-xs backdrop-blur-sm">
           <svg
             className="h-3.5 w-3.5 shrink-0 text-orange-400"
             fill="none"
@@ -125,18 +125,18 @@ export function UpdateNotification({
             variant="ghost"
             size="sm"
             onClick={onDismiss}
-            className="text-white/60 hover:text-white/80 text-[10px]"
+            className="rounded-full text-white/60 hover:text-white/80 text-[10px]"
           >
-            Later
+            Despues
           </Button>
           {isDownloaded && (
             <Button
               variant="ghost"
               size="sm"
               onClick={onRestart}
-              className="bg-white/20 text-white hover:bg-white/30 text-[10px]"
+              className="rounded-full bg-white/20 text-white hover:bg-white/30 text-[10px]"
             >
-              Restart
+              Reiniciar
             </Button>
           )}
         </div>
@@ -145,8 +145,8 @@ export function UpdateNotification({
   }
 
   return (
-    <div className="app-no-drag absolute left-0 right-0 top-0 z-40 mx-1 mt-1">
-      <div className="flex items-center gap-1.5 rounded-lg bg-secondary px-2.5 py-1.5 text-xs backdrop-blur-sm">
+    <div className="app-no-drag absolute left-0 right-0 top-0 z-40 mx-3 mt-3">
+      <div className="flex items-center gap-1.5 rounded-[1.25rem] bg-secondary px-3.5 py-2 text-xs backdrop-blur-sm">
         <svg
           className="h-3.5 w-3.5 shrink-0 text-muted-foreground"
           fill="none"
@@ -163,7 +163,7 @@ export function UpdateNotification({
         </svg>
 
         <span className="flex-1 text-foreground/80">
-          Update{isDownloaded ? ' ready' : ' available'}
+          Actualización {isDownloaded ? ' lista' : ' disponible'}
           {updateInfo.version && (
             <span className="text-muted-foreground"> v{updateInfo.version}</span>
           )}
@@ -186,9 +186,9 @@ export function UpdateNotification({
             variant="ghost"
             size="sm"
             onClick={onRestart}
-            className="bg-white/20 text-white hover:bg-white/30 text-[10px]"
+            className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
           >
-            Restart
+            Reiniciar
           </Button>
         ) : null}
 
@@ -196,9 +196,9 @@ export function UpdateNotification({
           variant="ghost"
           size="sm"
           onClick={onDismiss}
-          className="text-muted-foreground hover:text-foreground/60 text-[10px]"
+          className="text-muted-foreground hover:text-foreground/60 text-[10px] rounded-full"
         >
-          Dismiss
+          Omitir
         </Button>
       </div>
     </div>
