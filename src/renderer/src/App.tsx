@@ -21,7 +21,10 @@ export default function App(): React.JSX.Element {
   const { isPinned, togglePin } = usePinned()
   const { config, updateConfig, configRef } = useConfig()
   const { stats, refresh: refreshStats } = useStats()
-  const { logSession, clearSessions, exportCsv } = useSessions({ onSessionLogged: refreshStats })
+  const { logSession, clearSessions, exportCsv } = useSessions({
+    onSessionLogged: refreshStats,
+    onSessionsCleared: refreshStats
+  })
 
   const { timeLeft, isRunning, timerPhase, toggleTimer, resetTimer, skipRest, setTimeLeft } =
     useTimer(config.focusMinutes, config.restMinutes, configRef, logSession)

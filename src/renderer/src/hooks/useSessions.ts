@@ -11,6 +11,7 @@ interface UseSessionsReturn {
 
 interface UseSessionsOptions {
   onSessionLogged?: () => void
+  onSessionsCleared?: () => void
 }
 
 export function useSessions(options?: UseSessionsOptions): UseSessionsReturn {
@@ -31,6 +32,7 @@ export function useSessions(options?: UseSessionsOptions): UseSessionsReturn {
   const clearSessions = async (): Promise<void> => {
     setSessions([])
     await sessionsService.clear()
+    options?.onSessionsCleared?.()
   }
 
   const exportCsv = async (): Promise<void> => {
