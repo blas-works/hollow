@@ -1,7 +1,9 @@
 import { dialog, shell, BrowserWindow } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import { is } from '@electron-toolkit/utils'
-import type { UpdateInfo, UpdateMetadata, UpdatePriority } from '../shared/types'
+import type Store from 'electron-store'
+import type { StoreSchema } from './index'
+import type { UpdateInfo, UpdateMetadata, UpdatePriority, PendingUpdate } from '../shared/types'
 
 const RELEASE_URL = 'https://github.com/torrescereno/hollow/releases/latest'
 const METADATA_URL =
@@ -16,19 +18,21 @@ const POLL_INTERVALS = {
 } as const
 
 let mainWindowRef: BrowserWindow | null = null
+let storeRef: Store<StoreSchema> | null = null
 let checkInterval: NodeJS.Timeout | null = null
 let snoozeTimeout: NodeJS.Timeout | null = null
 let lastPriority: UpdatePriority = 'normal'
 let updateDownloaded = false
 let lastStatus: UpdateInfo = { available: false }
 
-export function setupAutoUpdater(mainWindow: BrowserWindow): void {
+export function setupAutoUpdater(mainWindow: BrowserWindow, store: Store<StoreSchema>): void {
   if (is.dev) return
 
   mainWindowRef = mainWindow
+  storeRef = store
 
   autoUpdater.autoDownload = false
-  autoUpdater.autoInstallOnAppQuit = true
+  autoUpdater.autoInstallOnAppQuit = false
 
   autoUpdater.on('update-available', (info) => {
     if (!canAutoUpdate) {
@@ -54,6 +58,14 @@ export function setupAutoUpdater(mainWindow: BrowserWindow): void {
 
   autoUpdater.on('update-downloaded', () => {
     updateDownloaded = true
+
+    const pending: PendingUpdate = {
+      version: lastStatus.version!,
+      priority: lastStatus.priority || 'normal',
+      message: lastStatus.message
+    }
+    storeRef?.set('pendingUpdate', pending)
+
     sendUpdateStatus({
       ...lastStatus,
       progress: 100,
@@ -65,6 +77,27 @@ export function setupAutoUpdater(mainWindow: BrowserWindow): void {
     console.error('Auto-updater error:', error.message)
     sendUpdateStatus({ available: false })
   })
+}
+
+export function checkPendingUpdate(): void {
+  if (is.dev || !storeRef) return
+
+  const pending = storeRef.get('pendingUpdate')
+  if (!pending) return
+
+  lastPriority = pending.priority
+  updateDownloaded = true
+
+  lastStatus = {
+    available: true,
+    version: pending.version,
+    priority: pending.priority,
+    message: pending.message,
+    progress: 100,
+    downloaded: true
+  }
+
+  sendUpdateStatus(lastStatus)
 }
 
 async function handleUpdateAvailable(version: string): Promise<void> {
@@ -171,6 +204,7 @@ export function getUpdateStatus(): UpdateInfo {
 
 export function forceRestart(): void {
   if (updateDownloaded) {
+    storeRef?.set('pendingUpdate', null)
     autoUpdater.quitAndInstall()
   }
 }

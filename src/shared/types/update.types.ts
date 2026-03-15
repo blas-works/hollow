@@ -16,3 +16,9 @@ export interface UpdateInfo {
   progress?: number
   downloaded?: boolean
 }
+
+export interface PendingUpdate {
+  version: string
+  priority: UpdatePriority
+  message?: string
+}

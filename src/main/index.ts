@@ -2,7 +2,7 @@ import { app, BrowserWindow, nativeImage } from 'electron'
 import Store from 'electron-store'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
-import { setupAutoUpdater, setMainWindow, startPolling } from './autoUpdater'
+import { setupAutoUpdater, setMainWindow, startPolling, checkPendingUpdate } from './autoUpdater'
 import { initDatabase, closeDatabase } from '../database/client'
 import {
   registerSessionIPC,
@@ -11,11 +11,12 @@ import {
   registerAppIPC,
   registerUpdateIPC
 } from './ipc'
-import type { AppConfig } from '../shared/types'
+import type { AppConfig, PendingUpdate } from '../shared/types'
 
 export interface StoreSchema {
   isPinned: boolean
   config: AppConfig
+  pendingUpdate: PendingUpdate | null
 }
 
 const store = new Store<StoreSchema>({
@@ -27,7 +28,8 @@ const store = new Store<StoreSchema>({
       soundEnabled: true,
       selectedSound: 'bell',
       confettiEnabled: true
-    }
+    },
+    pendingUpdate: null
   }
 })
 
@@ -124,7 +126,8 @@ if (!gotTheLock) {
     createWindow()
 
     if (!is.dev) {
-      if (mainWindow) setupAutoUpdater(mainWindow)
+      if (mainWindow) setupAutoUpdater(mainWindow, store)
+      checkPendingUpdate()
       startPolling()
     }
 
