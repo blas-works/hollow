@@ -184,42 +184,56 @@ graph TB
 
 ```mermaid
 sequenceDiagram
+    participant Store as Electron Store
     participant App as React App
     participant Main as Main Process
     participant GitHub as GitHub Releases
     participant User as User
 
-    App->>Main: setupAutoUpdater()
-    Main->>GitHub: Check for updates (polling)
+    Main->>Store: checkPendingUpdate()
+    alt Pending update exists
+        Store-->>Main: pendingUpdate data
+        Main->>App: update-status (downloaded)
+        App->>User: Show notification
+        User->>App: Restart or Skip
+    end
+
+    Main->>GitHub: startPolling()
 
     alt Normal Update
         GitHub-->>Main: Update available (metadata)
+        Main->>Main: Auto-download in background
+        Main->>Store: Save pendingUpdate
         Main->>App: update-status (normal)
         App->>User: Show banner notification
-        User->>App: Download & Restart
+        User->>App: Restart now or Skip
     else Security Update
         GitHub-->>Main: Update available (security)
-        Main->>Main: Auto-download
+        Main->>Main: Auto-download in background
+        Main->>Store: Save pendingUpdate
         Main->>App: update-status (security)
         App->>User: Show orange banner
-        User->>App: Restart now or later
+        User->>App: Restart now or Later
     else Critical Update
         GitHub-->>Main: Update available (critical)
-        Main->>Main: Auto-download
+        Main->>Main: Auto-download in background
+        Main->>Store: Save pendingUpdate
         Main->>App: update-status (critical)
         App->>User: Show blocking modal
         User->>App: Restart now or snooze 5min
         App->>Main: forceRestart() or snooze()
     end
+
+    Note over User,Store: Skip = app closes normally, no install.<br/>Next launch re-shows notification.
 ```
 
 ### Update Priority Levels
 
-| Prioridad    | Intervalo | Comportamiento                                   |
-| ------------ | --------- | ------------------------------------------------ |
-| **Normal**   | 60 min    | Check periódico, notificar al usuario            |
-| **Security** | 15 min    | Auto-descargar, notificar con acción recomendada |
-| **Critical** | 5 min     | Auto-descargar, modal bloqueante con countdown   |
+| Prioridad    | Intervalo | Comportamiento                                                                  |
+| ------------ | --------- | ------------------------------------------------------------------------------- |
+| **Normal**   | 60 min    | Descarga silenciosa, notificar. Skip omite realmente, re-muestra al reiniciar   |
+| **Security** | 15 min    | Descarga silenciosa, notificar con acción recomendada. Persiste entre reinicios |
+| **Critical** | 5 min     | Descarga silenciosa, modal bloqueante con countdown y snooze                    |
 
 ### Resumen de Capas
 
