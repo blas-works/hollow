@@ -212,7 +212,7 @@ jobs:
   build-macos-x64:
     needs: [test, release]
     if: needs.release.outputs.release_created
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
