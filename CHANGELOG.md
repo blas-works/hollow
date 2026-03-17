@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.2](https://github.com/torrescereno/hollow/compare/v3.5.1...v3.5.2) (2026-03-17)
+
+
+### Bug Fixes
+
+* timer view counter ([124ffb4](https://github.com/torrescereno/hollow/commit/124ffb4773555cba1b24d058ca0a216cf16aa322))
+* z-index play button ([419f43f](https://github.com/torrescereno/hollow/commit/419f43fe30cd85bf3551740ece0c1366a01fe4d0))
+
 ## [3.5.1](https://github.com/torrescereno/hollow/compare/v3.5.0...v3.5.1) (2026-03-15)
 
 
