@@ -52,7 +52,9 @@ export function TimerView({
     prevPhaseRef.current = timerPhase
   }, [timerPhase, confettiEnabled])
 
-  const displayMinutes = Math.ceil(timeLeft / 60).toString()
+  const isLastMinute = timeLeft < 60
+  const displayValue = isLastMinute ? timeLeft.toString() : Math.floor(timeLeft / 60).toString()
+  const displayUnit: 'm' | 's' = isLastMinute ? 's' : 'm'
   const showTimer = timerPhase !== 'rest' || isRunning
 
   return (
@@ -80,7 +82,7 @@ export function TimerView({
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2, ease: 'easeInOut' }}
                 >
-                  <Timer minutes={displayMinutes} isRunning={isRunning} />
+                  <Timer value={displayValue} unit={displayUnit} isRunning={isRunning} />
                 </motion.div>
               ) : (
                 <motion.span

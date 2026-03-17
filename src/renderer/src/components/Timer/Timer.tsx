@@ -1,11 +1,12 @@
 import React from 'react'
 
 interface TimerProps {
-  minutes: string
+  value: string
+  unit: 'm' | 's'
   isRunning: boolean
 }
 
-export function Timer({ minutes, isRunning }: TimerProps): React.JSX.Element {
+export function Timer({ value, unit, isRunning }: TimerProps): React.JSX.Element {
   const opacityClass = isRunning ? 'opacity-100' : 'opacity-25'
 
   return (
@@ -13,9 +14,9 @@ export function Timer({ minutes, isRunning }: TimerProps): React.JSX.Element {
       <span
         className={`font-mono tracking-[-0.05em] text-[4rem] font-extralight text-text-main ${opacityClass} transition-opacity duration-500`}
       >
-        {minutes}
+        {value}
       </span>
-      <span className="font-mono font-light text-xl text-text-main opacity-25">m</span>
+      <span className="font-mono font-light text-xl text-text-main opacity-25">{unit}</span>
     </div>
   )
 }
