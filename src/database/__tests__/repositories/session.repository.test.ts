@@ -335,4 +335,59 @@ describe('SessionRepository', () => {
       expect(mockRun).toHaveBeenCalled()
     })
   })
+
+  describe('getDailyActivity', () => {
+    it('should return daily activity with sessions', () => {
+      const mockDate = new Date('2024-01-15T10:30:00')
+      mockAll.mockReturnValue([
+        { startTime: mockDate, focusMinutes: 25 },
+        { startTime: mockDate, focusMinutes: 30 }
+      ])
+
+      const result = sessionRepository.getDailyActivity(365)
+
+      expect(result).toHaveLength(1)
+      expect(result[0].sessions).toBe(2)
+      expect(result[0].totalMinutes).toBe(55)
+    })
+
+    it('should return empty array when no sessions', () => {
+      mockAll.mockReturnValue([])
+
+      const result = sessionRepository.getDailyActivity(365)
+
+      expect(result).toHaveLength(0)
+    })
+
+    it('should handle sessions on different days', () => {
+      const date1 = new Date('2024-01-15T10:30:00')
+      const date2 = new Date('2024-01-16T14:30:00')
+      mockAll.mockReturnValue([
+        { startTime: date1, focusMinutes: 25 },
+        { startTime: date2, focusMinutes: 30 }
+      ])
+
+      const result = sessionRepository.getDailyActivity(365)
+
+      expect(result).toHaveLength(2)
+    })
+
+    it('should use custom daysBack parameter', () => {
+      mockAll.mockReturnValue([])
+
+      sessionRepository.getDailyActivity(30)
+
+      expect(mockSelect).toHaveBeenCalled()
+    })
+
+    it('should handle timestamp as number for startTime', () => {
+      const timestamp = Math.floor(new Date('2024-01-15T10:30:00').getTime() / 1000)
+      mockAll.mockReturnValue([{ startTime: timestamp, focusMinutes: 25 }])
+
+      const result = sessionRepository.getDailyActivity(365)
+
+      expect(result).toHaveLength(1)
+      expect(result[0].sessions).toBe(1)
+    })
+  })
 })

@@ -48,6 +48,18 @@ describe('useSessions', () => {
     expect(result.current.sessions).toEqual([])
   })
 
+  it('should handle null response from load', async () => {
+    vi.mocked(sessionsService.load).mockResolvedValue(null as unknown as [])
+
+    const { result } = renderHook(() => useSessions())
+
+    await waitFor(() => {
+      expect(sessionsService.load).toHaveBeenCalled()
+    })
+
+    expect(result.current.sessions).toEqual([])
+  })
+
   it('should log a new session', async () => {
     vi.mocked(sessionsService.load).mockResolvedValue([])
     vi.mocked(sessionsService.create).mockResolvedValue(mockSession)

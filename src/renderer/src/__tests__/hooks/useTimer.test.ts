@@ -180,8 +180,61 @@ describe('useTimer', () => {
     expect(result.current.isRunning).toBe(false)
   })
 
-  it('should play sound when timer completes', () => {
+  it('should play sound when rest phase completes', () => {
     const { result } = renderHook(() => useTimer(1, 1, mockConfigRef, mockOnSessionComplete))
+
+    act(() => {
+      result.current.toggleTimer()
+    })
+
+    act(() => {
+      vi.advanceTimersByTime(60000)
+    })
+
+    expect(result.current.timerPhase).toBe('rest')
+    expect(result.current.isRunning).toBe(false)
+
+    act(() => {
+      result.current.toggleTimer()
+    })
+
+    expect(result.current.isRunning).toBe(true)
+
+    act(() => {
+      vi.advanceTimersByTime(60000)
+    })
+
+    act(() => {
+      vi.advanceTimersByTime(0)
+    })
+
+    expect(result.current.timerPhase).toBe('focus')
+    expect(audioUtils.playCompletionSound).toHaveBeenCalled()
+  })
+
+  it('should not play sound when soundEnabled is false during rest completion', () => {
+    const configRefNoSound = {
+      current: {
+        focusMinutes: 1,
+        restMinutes: 1,
+        soundEnabled: false,
+        selectedSound: 'bell' as const,
+        confettiEnabled: true
+      }
+    }
+
+    const { result } = renderHook(() => useTimer(1, 1, configRefNoSound, mockOnSessionComplete))
+
+    act(() => {
+      result.current.toggleTimer()
+    })
+
+    act(() => {
+      vi.advanceTimersByTime(60000)
+    })
+
+    expect(result.current.timerPhase).toBe('rest')
+    expect(result.current.isRunning).toBe(false)
 
     act(() => {
       result.current.toggleTimer()
@@ -195,6 +248,7 @@ describe('useTimer', () => {
       vi.advanceTimersByTime(0)
     })
 
-    expect(audioUtils.playCompletionSound).toHaveBeenCalled()
+    expect(result.current.timerPhase).toBe('focus')
+    expect(audioUtils.playCompletionSound).not.toHaveBeenCalled()
   })
 })
