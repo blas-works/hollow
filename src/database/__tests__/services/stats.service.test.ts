@@ -8,7 +8,8 @@ vi.mock('../../repositories', () => ({
     getCompletionRate: vi.fn(),
     getLongestSession: vi.fn(),
     getAvgPerDay: vi.fn(),
-    getWeeklyActivity: vi.fn()
+    getWeeklyActivity: vi.fn(),
+    getDailyActivity: vi.fn()
   },
   streakRepository: {
     getOrCreate: vi.fn(),
@@ -49,6 +50,7 @@ describe('StatsService', () => {
         { day: 'Sa', active: false, isToday: false },
         { day: 'Do', active: false, isToday: false }
       ])
+      vi.mocked(sessionRepository.getDailyActivity).mockReturnValue([])
 
       const result = statsService.getFullStats()
 
@@ -84,6 +86,7 @@ describe('StatsService', () => {
         { day: 'Sa', active: false, isToday: false },
         { day: 'Do', active: false, isToday: false }
       ])
+      vi.mocked(sessionRepository.getDailyActivity).mockReturnValue([])
 
       const result = statsService.getFullStats()
 
@@ -115,6 +118,7 @@ describe('StatsService', () => {
       vi.mocked(sessionRepository.getLongestSession).mockReturnValue(0)
       vi.mocked(sessionRepository.getAvgPerDay).mockReturnValue(0)
       vi.mocked(sessionRepository.getWeeklyActivity).mockReturnValue([])
+      vi.mocked(sessionRepository.getDailyActivity).mockReturnValue([])
 
       statsService.getFullStats()
 
