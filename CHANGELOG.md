@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://github.com/torrescereno/hollow/compare/v3.5.2...v3.6.0) (2026-03-18)
+
+
+### Features
+
+* add activities panel ([4b189c7](https://github.com/torrescereno/hollow/commit/4b189c7ce9d15ab9ae8a4cba15a782da05224491))
+* add readme e ([b4ac86d](https://github.com/torrescereno/hollow/commit/b4ac86dbb8acf33431fc72326c73c1c32e63b172))
+* add test ([b7908a1](https://github.com/torrescereno/hollow/commit/b7908a11b1cdefaade816dc7cbd32c30d0449a55))
+
+
+### Bug Fixes
+
+* test ([e948784](https://github.com/torrescereno/hollow/commit/e94878416f743c7eca0f3b4a3f6c775eb3634d69))
+
 ## [3.5.2](https://github.com/torrescereno/hollow/compare/v3.5.1...v3.5.2) (2026-03-17)
 
 
