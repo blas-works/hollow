@@ -24,7 +24,8 @@ describe('useTimer', () => {
         restMinutes: 5,
         soundEnabled: true,
         selectedSound: 'bell',
-        confettiEnabled: true
+        confettiEnabled: true,
+        locale: 'en' as const
       }
     }
   })
@@ -219,7 +220,8 @@ describe('useTimer', () => {
         restMinutes: 1,
         soundEnabled: false,
         selectedSound: 'bell' as const,
-        confettiEnabled: true
+        confettiEnabled: true,
+        locale: 'en' as const
       }
     }
 

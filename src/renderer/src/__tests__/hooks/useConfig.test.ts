@@ -22,7 +22,8 @@ describe('useConfig', () => {
       restMinutes: 10,
       soundEnabled: false,
       selectedSound: 'chime',
-      confettiEnabled: true
+      confettiEnabled: true,
+      locale: 'en'
     }
 
     vi.mocked(configService.load).mockResolvedValue(mockConfig)
@@ -71,7 +72,8 @@ describe('useConfig', () => {
       restMinutes: 5,
       soundEnabled: true,
       selectedSound: 'bell',
-      confettiEnabled: true
+      confettiEnabled: true,
+      locale: 'en'
     }
 
     vi.mocked(configService.load).mockResolvedValue({} as AppConfig)
