@@ -65,8 +65,15 @@ function updateTrayTitle(): void {
     return
   }
 
-  const remainingMinutes = Math.max(1, Math.ceil(backgroundTimerState.timeLeft / 60))
-  tray.setTitle(`${remainingMinutes}m`)
+  const timeLeft = Math.max(0, backgroundTimerState.timeLeft)
+
+  if (timeLeft < 60) {
+    tray.setTitle(`${timeLeft.toString().padStart(2, '0')}s`)
+    return
+  }
+
+  const remainingMinutes = Math.floor(timeLeft / 60)
+  tray.setTitle(`${remainingMinutes.toString().padStart(2, '0')}m`)
 }
 
 function enterBackgroundWindowMode(): void {
