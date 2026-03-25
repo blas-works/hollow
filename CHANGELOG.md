@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.10.1](https://github.com/blas-works/hollow/compare/v3.10.0...v3.10.1) (2026-03-25)
+
+
+### Bug Fixes
+
+* actualizacion automatica en mac ([a70b4ca](https://github.com/blas-works/hollow/commit/a70b4cada20d2681843378ce599ea90e8a169ac5))
+
 ## [3.10.0](https://github.com/blas-works/hollow/compare/v3.9.1...v3.10.0) (2026-03-25)
 
 
