@@ -95,7 +95,8 @@ export const es = {
     downloading: 'Descargando...',
     skip: 'Omitir',
     available: 'Actualización disponible',
-    snooze: '5 min'
+    snooze: '5 min',
+    brewHint: 'brew upgrade --cask hollow'
   },
   sounds: {
     bell: 'Campana Clásica',

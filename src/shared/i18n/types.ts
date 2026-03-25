@@ -93,6 +93,7 @@ export interface Translations {
     skip: string
     available: string
     snooze: string
+    brewHint: string
   }
   sounds: {
     bell: string

@@ -95,7 +95,8 @@ export const en = {
     downloading: 'Downloading...',
     skip: 'Skip',
     available: 'Update available',
-    snooze: '5 min'
+    snooze: '5 min',
+    brewHint: 'brew upgrade --cask hollow'
   },
   sounds: {
     bell: 'Classic Bell',
