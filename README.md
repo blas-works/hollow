@@ -58,17 +58,6 @@
 
 ## 🚀 Installation
 
-### Downloads
-
-Download the latest version from [GitHub Releases](https://github.com/blas-works/hollow/releases/latest).
-
-| Platform    | Architecture  | Format             |
-| ----------- | ------------- | ------------------ |
-| **Windows** | x64           | `.msi`             |
-| **Linux**   | x64           | `.AppImage` `.deb` |
-| **macOS**   | Apple Silicon | `.dmg` `.zip`      |
-| **macOS**   | Intel         | `.dmg` `.zip`      |
-
 ### Homebrew (macOS/Linux)
 
 Install Hollow via [Homebrew](https://brew.sh):
@@ -92,17 +81,24 @@ To upgrade to the latest version:
 brew upgrade --cask hollow
 ```
 
-> **Note:** Automatic updates are not available on macOS via Homebrew. Run `brew upgrade --cask hollow` to update.
+### Manual Download
 
-#### macOS: First Run (Manual Install)
+Download the latest version from [GitHub Releases](https://github.com/blas-works/hollow/releases/latest).
+
+| Platform    | Architecture  | Format                    |
+| ----------- | ------------- | ------------------------- |
+| **Windows** | x64           | `.exe` (NSIS)             |
+| **Linux**   | x64           | `.AppImage` `.deb` `.rpm` |
+| **macOS**   | Apple Silicon | `.dmg`                    |
+| **macOS**   | Intel         | `.dmg`                    |
+
+#### macOS: First Run
 
 The app is not signed with Apple Developer. After installing, run in Terminal:
 
 ```bash
 xattr -cr /Applications/Hollow.app
 ```
-
-> **Note:** Manual `.dmg`/`.zip` installs do not receive automatic updates. Use Homebrew for easier updates.
 
 ### Development
 
