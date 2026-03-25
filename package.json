@@ -2,8 +2,8 @@
   "name": "hollow",
   "version": "3.8.0",
   "description": "Un temporizador Pomodoro minimalista para escritorio",
-  "author": "torrescereno",
-  "homepage": "https://github.com/torrescereno/hollow",
+  "author": "blas",
+  "homepage": "https://github.com/blas-works/hollow",
   "main": "./out/main/index.js",
   "scripts": {
     "format": "prettier --write .",

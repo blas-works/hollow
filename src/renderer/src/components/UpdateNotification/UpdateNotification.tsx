@@ -10,8 +10,6 @@ interface UpdateNotificationProps {
   onDismiss: () => void
 }
 
-const RELEASE_URL = 'https://github.com/torrescereno/hollow/releases/latest'
-
 export function UpdateNotification({
   updateInfo,
   onRestart,
@@ -43,17 +41,13 @@ export function UpdateNotification({
     return () => clearInterval(timer)
   }, [updateInfo, onRestart])
 
-  const handleDownload = (): void => {
-    window.electronAPI?.openExternal(RELEASE_URL)
-    onDismiss()
-  }
-
   if (!updateInfo?.available) return null
 
   const isCritical = updateInfo.priority === 'critical'
   const isSecurity = updateInfo.priority === 'security'
   const isDownloaded = updateInfo.downloaded === true
-  const isManualDownload = updateInfo.manualDownload === true
+  const isDownloading = !isDownloaded && (updateInfo.progress ?? 0) > 0
+  const progress = updateInfo.progress ?? 0
 
   if (isCritical) {
     const minutes = Math.floor(countdown / 60)
@@ -78,54 +72,29 @@ export function UpdateNotification({
               />
             </svg>
             <span className="flex-1 text-xs font-medium">Critical update</span>
-            {!isManualDownload && (
-              <span className="rounded-full bg-red-950/60 px-2 py-0.5 font-mono text-[10px] font-bold text-red-300">
-                {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-              </span>
-            )}
+            <span className="rounded-full bg-red-950/60 px-2 py-0.5 font-mono text-[10px] font-bold text-red-300">
+              {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+            </span>
           </div>
 
           <div className="flex gap-1.5">
-            {isManualDownload ? (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onDismiss}
-                  className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
-                >
-                  {t.update.later}
-                </Button>
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={handleDownload}
-                  className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
-                >
-                  {t.update.download}
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onSnooze}
-                  className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
-                >
-                  {t.update.snooze}
-                </Button>
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={onRestart}
-                  disabled={!isDownloaded}
-                  className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
-                >
-                  {isDownloaded ? t.update.restart : t.update.downloading}
-                </Button>
-              </>
-            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onSnooze}
+              className="flex-1 rounded-full bg-white/10 text-white/80 hover:bg-white/20 text-[10px]"
+            >
+              {t.update.snooze}
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={onRestart}
+              disabled={!isDownloaded}
+              className="flex-1 rounded-full bg-white text-red-900 hover:bg-white/90 text-[10px]"
+            >
+              {isDownloaded ? t.update.restart : `${t.update.downloading} ${progress}%`}
+            </Button>
           </div>
         </div>
       </div>
@@ -164,27 +133,20 @@ export function UpdateNotification({
           >
             {t.update.later}
           </Button>
-          {isManualDownload ? (
+          {isDownloaded ? (
             <Button
               variant="ghost"
               size="sm"
-              onClick={handleDownload}
+              onClick={onRestart}
               className="rounded-full bg-white/20 text-white hover:bg-white/30 text-[10px]"
             >
-              {t.update.download}
+              {t.update.restart}
             </Button>
-          ) : (
-            isDownloaded && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onRestart}
-                className="rounded-full bg-white/20 text-white hover:bg-white/30 text-[10px]"
-              >
-                {t.update.restart}
-              </Button>
-            )
-          )}
+          ) : isDownloading ? (
+            <span className="text-[10px] text-orange-300 font-mono">
+              {t.update.downloading} {progress}%
+            </span>
+          ) : null}
         </div>
       </div>
     )
@@ -223,27 +185,20 @@ export function UpdateNotification({
         >
           {t.update.skip}
         </Button>
-        {isManualDownload ? (
+        {isDownloaded ? (
           <Button
             variant="ghost"
             size="sm"
-            onClick={handleDownload}
+            onClick={onRestart}
             className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
           >
-            {t.update.download}
+            {t.update.restart}
           </Button>
-        ) : (
-          isDownloaded && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onRestart}
-              className="bg-white/20 text-white hover:bg-white/30 text-[10px] rounded-full"
-            >
-              {t.update.restart}
-            </Button>
-          )
-        )}
+        ) : isDownloading ? (
+          <span className="text-[10px] text-muted-foreground font-mono">
+            {t.update.downloading} {progress}%
+          </span>
+        ) : null}
       </div>
     </div>
   )

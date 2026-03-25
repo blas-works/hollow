@@ -15,7 +15,6 @@ export interface UpdateInfo {
   message?: string
   progress?: number
   downloaded?: boolean
-  manualDownload?: boolean
 }
 
 export interface PendingUpdate {

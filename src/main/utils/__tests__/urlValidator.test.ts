@@ -4,13 +4,13 @@ import { validateExternalUrl } from '../urlValidator'
 describe('validateExternalUrl', () => {
   describe('valid URLs', () => {
     it('should accept https://github.com URLs', () => {
-      const result = validateExternalUrl('https://github.com/torrescereno/hollow')
+      const result = validateExternalUrl('https://github.com/blas-works/hollow')
       expect(result.isValid).toBe(true)
       expect(result.error).toBeUndefined()
     })
 
     it('should accept https://github.io subdomains', () => {
-      const result = validateExternalUrl('https://torrescereno.github.io/project')
+      const result = validateExternalUrl('https://blas-works.github.io/project')
       expect(result.isValid).toBe(true)
     })
 

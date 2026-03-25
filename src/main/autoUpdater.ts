@@ -6,11 +6,10 @@ import type { StoreSchema } from './index'
 import type { UpdateInfo, UpdateMetadata, UpdatePriority, PendingUpdate } from '../shared/types'
 import { getMainTranslations, interpolate } from './i18n'
 
-const RELEASE_URL = 'https://github.com/torrescereno/hollow/releases/latest'
+const RELEASE_URL = 'https://github.com/blas-works/hollow/releases/latest'
 const METADATA_URL =
-  'https://github.com/torrescereno/hollow/releases/latest/download/update-metadata.json'
+  'https://github.com/blas-works/hollow/releases/latest/download/update-metadata.json'
 
-const isMacOS = process.platform === 'darwin'
 const canAutoUpdate = process.platform !== 'linux' || !!process.env.APPIMAGE
 
 const POLL_INTERVALS = {
@@ -34,7 +33,7 @@ export function setupAutoUpdater(mainWindow: BrowserWindow, store: Store<StoreSc
   storeRef = store
 
   autoUpdater.autoDownload = false
-  autoUpdater.autoInstallOnAppQuit = false
+  autoUpdater.autoInstallOnAppQuit = true
 
   autoUpdater.on('update-available', (info) => {
     if (!canAutoUpdate) {
@@ -84,11 +83,6 @@ export function setupAutoUpdater(mainWindow: BrowserWindow, store: Store<StoreSc
 export function checkPendingUpdate(): void {
   if (is.dev || !storeRef) return
 
-  if (isMacOS) {
-    storeRef.delete('pendingUpdate')
-    return
-  }
-
   const pending = storeRef.get('pendingUpdate')
   if (!pending) return
 
@@ -121,17 +115,10 @@ async function handleUpdateAvailable(version: string): Promise<void> {
     priority,
     message: metadata?.message,
     progress: 0,
-    downloaded: false,
-    manualDownload: isMacOS
+    downloaded: false
   }
 
   sendUpdateStatus(lastStatus)
-
-  if (isMacOS) {
-    showMacOSManualUpdateDialog(version, priority)
-    return
-  }
-
   autoUpdater.downloadUpdate()
 
   if (previousPriority !== priority && checkInterval) {
@@ -159,36 +146,6 @@ function showLinuxManualUpdateDialog(version: string): void {
       title: t.updater.title,
       message: interpolate(t.updater.linuxMessage, { version }),
       buttons: [t.updater.downloadBtn, t.updater.laterBtn]
-    })
-    .then((result) => {
-      if (result.response === 0) {
-        shell.openExternal(RELEASE_URL)
-      }
-    })
-}
-
-function showMacOSManualUpdateDialog(version: string, priority: UpdatePriority): void {
-  const t = getMainTranslations()
-
-  const titleMap: Record<UpdatePriority, string> = {
-    normal: t.updater.title,
-    security: t.updater.titleSecurity,
-    critical: t.updater.titleCritical
-  }
-
-  const noteMap: Record<UpdatePriority, string> = {
-    normal: '',
-    security: t.updater.macSecurityNote,
-    critical: t.updater.macCriticalNote
-  }
-
-  dialog
-    .showMessageBox({
-      type: priority === 'critical' ? 'warning' : 'info',
-      title: titleMap[priority],
-      message: `${interpolate(t.updater.macMessage, { version })}${noteMap[priority]}`,
-      detail: t.updater.macDetail,
-      buttons: [t.updater.downloadNow, t.updater.remindLater]
     })
     .then((result) => {
       if (result.response === 0) {

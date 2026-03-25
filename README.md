@@ -22,8 +22,8 @@
     <a href="https://bun.sh">
       <img alt="Bun" src="https://img.shields.io/badge/Bun-1.1-000000?style=flat-square&logo=bun">
     </a>
-    <a href="https://codecov.io/gh/torrescereno/hollow">
-      <img alt="Coverage" src="https://img.shields.io/codecov/c/github/torrescereno/hollow?style=flat-square&logo=codecov&label=coverage">
+    <a href="https://codecov.io/gh/blas-works/hollow">
+      <img alt="Coverage" src="https://img.shields.io/codecov/c/github/blas-works/hollow?style=flat-square&logo=codecov&label=coverage">
     </a>
   </p>
 
@@ -72,7 +72,7 @@
 
 ### Downloads
 
-Download the latest version from [GitHub Releases](https://github.com/torrescereno/hollow/releases/latest).
+Download the latest version from [GitHub Releases](https://github.com/blas-works/hollow/releases/latest).
 
 | Platform    | Architecture  | Format             |
 | ----------- | ------------- | ------------------ |
@@ -89,7 +89,7 @@ The app is not signed with Apple Developer. After installing, run in Terminal:
 xattr -cr /Applications/Hollow.app
 ```
 
-> **Note:** Automatic updates are not available on macOS (requires Apple Developer signature). Download new versions manually from [Releases](https://github.com/torrescereno/hollow/releases/latest).
+> **Note:** Automatic updates are not available on macOS (requires Apple Developer signature). Download new versions manually from [Releases](https://github.com/blas-works/hollow/releases/latest).
 
 ### Development
 
@@ -102,7 +102,7 @@ xattr -cr /Applications/Hollow.app
 
 ```bash
 # Clone the repository
-git clone https://github.com/torrescereno/hollow.git
+git clone https://github.com/blas-works/hollow.git
 cd hollow
 
 # Install dependencies
@@ -124,9 +124,3 @@ bun run dev
 | `bun run build:linux` | Build for Linux (.AppImage, .deb)  |
 
 </details>
-
----
-
-<div align="center">
-  <sub>Made with ❤️ by <a href="https://github.com/torrescereno">torrescereno</a></sub>
-</div>

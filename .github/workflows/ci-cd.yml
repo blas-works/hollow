@@ -185,10 +185,6 @@ jobs:
     needs: [test, release]
     if: needs.release.outputs.release_created
     runs-on: macos-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [arm64, x64]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -204,12 +200,12 @@ jobs:
       - name: Generate icons
         run: bun run generate:icons
 
-      - name: Build macOS (${{ matrix.arch }})
+      - name: Build macOS (arm64 + x64)
         run: |
           rm -rf resources/migrations
           cp -r src/database/migrations resources/migrations
           bun run build
-          bunx electron-builder --mac --${{ matrix.arch }} --publish always
+          bunx electron-builder --mac --arm64 --x64 --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

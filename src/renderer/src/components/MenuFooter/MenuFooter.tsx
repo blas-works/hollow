@@ -11,7 +11,7 @@ export function MenuFooter(): React.JSX.Element {
   }, [])
 
   const handleGithubClick = async (): Promise<void> => {
-    await electronService.openExternal('https://github.com/torrescereno/hollow')
+    await electronService.openExternal('https://github.com/blas-works/hollow')
   }
 
   return (
