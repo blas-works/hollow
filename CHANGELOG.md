@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.9.1](https://github.com/blas-works/hollow/compare/v3.9.0...v3.9.1) (2026-03-25)
+
+
+### Bug Fixes
+
+* auto-trigger homebrew cask update after macOS build ([e92acd0](https://github.com/blas-works/hollow/commit/e92acd0af2ddc23ebf2d30c7a8b6bfdbd87d2a1f))
+* instalacion de win ([468ab9d](https://github.com/blas-works/hollow/commit/468ab9d0eeb420c168a5c2396e8ea7128afeb483))
+
 ## [3.9.0](https://github.com/blas-works/hollow/compare/v3.8.0...v3.9.0) (2026-03-25)
 
 
