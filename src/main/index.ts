@@ -171,8 +171,7 @@ function createWindow(): void {
       contextIsolation: true,
       nodeIntegration: false,
       backgroundThrottling: false,
-      // Required by better-sqlite3 (native addon)
-      sandbox: false
+      sandbox: true
     }
   })
 
@@ -186,6 +185,14 @@ function createWindow(): void {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+  })
+
+  mainWindow.webContents.on('will-navigate', (event) => {
+    event.preventDefault()
+  })
+
+  mainWindow.webContents.setWindowOpenHandler(() => {
+    return { action: 'deny' }
   })
 
   mainWindow.webContents.on('did-finish-load', () => {

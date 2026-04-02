@@ -20,6 +20,8 @@ extraResources:
 win:
   icon: build/icons/win/icon.ico
   executableName: hollow
+  signingHashAlgorithms:
+    - sha256
   target:
     - nsis
 nsis:
@@ -30,6 +32,7 @@ nsis:
 mac:
   icon: build/icons/mac/icon.icns
   entitlementsInherit: build/entitlements.mac.plist
+  hardenedRuntime: true
   artifactName: ${name}-${version}-${arch}.${ext}
   target:
     - dmg
@@ -39,7 +42,7 @@ mac:
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
     - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
-  notarize: false
+  notarize: true
 linux:
   icon: build/icons/png
   target:
@@ -50,6 +53,7 @@ linux:
   executableName: hollow
 appImage:
   artifactName: ${name}-${version}.${ext}
+forceCodeSigning: true
 publish:
   provider: github
   owner: blas-works
