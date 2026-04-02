@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/blas-works/hollow/compare/v4.0.0...v4.1.0) (2026-04-02)
+
+
+### Features
+
+* enhance security with sandboxing and navigation controls in main window ([f85aa93](https://github.com/blas-works/hollow/commit/f85aa939a1e630a9f232339b2d620737c08c3e8f))
+
 ## [4.0.0](https://github.com/blas-works/hollow/compare/v3.11.1...v4.0.0) (2026-03-28)
 
 
