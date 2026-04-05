@@ -99,7 +99,17 @@ export const en = {
     brewHint: 'brew upgrade --cask hollow',
     update: 'Update',
     updating: 'Updating...',
-    brewFailed: 'Update failed'
+    brewFailed: 'Update failed',
+    preparing: 'Preparing update',
+    preparingDesc: 'Getting everything ready...',
+    updatingBrew: 'Updating Homebrew',
+    updatingBrewDesc: 'Syncing formulae and casks...',
+    downloadingUpdate: 'Downloading update',
+    downloadingUpdateDesc: 'Fetching the latest version...',
+    installing: 'Installing update',
+    installingDesc: 'Applying the new version...',
+    restarting: 'Restarting',
+    restartingDesc: 'Relaunching Hollow...'
   },
   sounds: {
     bell: 'Classic Bell',

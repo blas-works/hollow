@@ -11,6 +11,7 @@ export { SoundSelector } from './SoundSelector'
 export { MenuFooter } from './MenuFooter'
 export { SliderWarning } from './SliderWarning'
 export { UpdateNotification } from './UpdateNotification'
+export { BrewUpdateOverlay } from './BrewUpdateOverlay'
 export { LanguageSelector } from './LanguageSelector'
 
 // UI Primitives

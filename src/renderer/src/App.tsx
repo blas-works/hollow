@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { AnimatePresence } from 'motion/react'
 import {
   useConfig,
@@ -13,7 +13,7 @@ import {
 import type { MenuTab } from './schemas'
 import { MenuView, TimerView } from './sections'
 import { TIMER_SIZE, MENU_SIZE } from './constants'
-import { UpdateNotification } from './components'
+import { UpdateNotification, BrewUpdateOverlay } from './components'
 import { I18nProvider } from './providers'
 import { windowService } from './services'
 
@@ -36,8 +36,22 @@ export default function App(): React.JSX.Element {
   const { updateInfo, checkForUpdates, restartNow, snoozeUpdate, brewUpgrade, dismissUpdate } =
     useUpdate()
 
-  const size = view === 'menu' ? MENU_SIZE : TIMER_SIZE
-  const borderRadius = view === 'menu' ? 'rounded-[2rem]' : 'rounded-[1.5rem]'
+  const showBrewOverlay = updateInfo?.brewUpdating === true && !!updateInfo.brewStep
+
+  const UPDATE_SIZE = useMemo(() => ({ w: 300, h: 200 }), [])
+
+  useEffect(() => {
+    if (showBrewOverlay) {
+      void windowService.resize(UPDATE_SIZE.w, UPDATE_SIZE.h)
+    }
+  }, [showBrewOverlay, UPDATE_SIZE])
+
+  const size = showBrewOverlay ? UPDATE_SIZE : view === 'menu' ? MENU_SIZE : TIMER_SIZE
+  const borderRadius = showBrewOverlay
+    ? 'rounded-[1.5rem]'
+    : view === 'menu'
+      ? 'rounded-[2rem]'
+      : 'rounded-[1.5rem]'
 
   useEffect(() => {
     void windowService.syncBackgroundTimer({
@@ -82,6 +96,9 @@ export default function App(): React.JSX.Element {
             onBrewUpgrade={brewUpgrade}
             onDismiss={dismissUpdate}
           />
+          {showBrewOverlay && (
+            <BrewUpdateOverlay step={updateInfo.brewStep} version={updateInfo.version} />
+          )}
           <AnimatePresence mode="wait" onExitComplete={onExitComplete}>
             {view === 'timer' && transitionPhase !== 'exiting' ? (
               <TimerView

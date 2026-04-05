@@ -97,6 +97,16 @@ export interface Translations {
     update: string
     updating: string
     brewFailed: string
+    preparing: string
+    preparingDesc: string
+    updatingBrew: string
+    updatingBrewDesc: string
+    downloadingUpdate: string
+    downloadingUpdateDesc: string
+    installing: string
+    installingDesc: string
+    restarting: string
+    restartingDesc: string
   }
   sounds: {
     bell: string
